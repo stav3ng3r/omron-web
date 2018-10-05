@@ -6,28 +6,12 @@
     <a href="{!! route('clients.index') !!}"><i class="fa fa-briefcase"></i><span>Clientes</span></a>
 </li>
 
-<li class="{{ Request::is('clients*') ? 'active' : '' }}">
-    <a href="{!! route('clients.index') !!}"><i class="fa fa-edit"></i><span>Clients</span></a>
-</li>
-
-<li class="{{ Request::is('clients*') ? 'active' : '' }}">
-    <a href="{!! route('clients.index') !!}"><i class="fa fa-edit"></i><span>Clients</span></a>
-</li>
-
 <li class="{{ Request::is('clientContacts*') ? 'active' : '' }}">
     <a href="{!! route('clientContacts.index') !!}"><i class="fa fa-edit"></i><span>Client Contacts</span></a>
 </li>
 
 <li class="{{ Request::is('clientAddresses*') ? 'active' : '' }}">
     <a href="{!! route('clientAddresses.index') !!}"><i class="fa fa-edit"></i><span>Client Addresses</span></a>
-</li>
-
-<li class="{{ Request::is('clientPaymentMethods*') ? 'active' : '' }}">
-    <a href="{!! route('clientPaymentMethods.index') !!}"><i class="fa fa-edit"></i><span>Client Payment Methods</span></a>
-</li>
-
-<li class="{{ Request::is('clientPaymentMethods*') ? 'active' : '' }}">
-    <a href="{!! route('clientPaymentMethods.index') !!}"><i class="fa fa-edit"></i><span>Client Payment Methods</span></a>
 </li>
 
 <li class="{{ Request::is('clientPaymentMethods*') ? 'active' : '' }}">
@@ -116,5 +100,9 @@
 
 <li class="{{ Request::is('stocks*') ? 'active' : '' }}">
     <a href="{!! route('stocks.index') !!}"><i class="fa fa-edit"></i><span>Stocks</span></a>
+</li>
+
+<li class="{{ Request::is('cities*') ? 'active' : '' }}">
+    <a href="{!! route('cities.index') !!}"><i class="fa fa-edit"></i><span>Cities</span></a>
 </li>
 

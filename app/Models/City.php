@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Country",
+ *      definition="City",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -16,29 +16,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="descripcion",
- *          description="descripcion",
- *          type="string"
+ *          property="pais",
+ *          description="pais",
+ *          type="integer",
+ *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="abreviatura",
- *          description="abreviatura",
+ *          property="descripcion",
+ *          description="descripcion",
  *          type="string"
  *      )
  * )
  */
-class Country extends Model
+class City extends Model
 {
 
-    public $table = 'cn_pais';
+    public $table = 'cn_ciudades';
 
-    const CREATED_AT = 'fecha_creacion';
-    const UPDATED_AT = 'fecha_actualizacion';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
 
 
     public $fillable = [
-        'descripcion',
-        'abreviatura'
+        'pais',
+        'descripcion'
     ];
 
     /**
@@ -48,8 +49,8 @@ class Country extends Model
      */
     protected $casts = [
         'id'          => 'integer',
-        'descripcion' => 'string',
-        'abreviatura' => 'string'
+        'pais'        => 'integer',
+        'descripcion' => 'string'
     ];
 
     /**
@@ -62,11 +63,11 @@ class Country extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCiudades()
+    public function country()
     {
-        return $this->hasMany(\App\Models\City::class);
+        return $this->belongsTo(\App\Models\Country::class, 'pais');
     }
 
     /**

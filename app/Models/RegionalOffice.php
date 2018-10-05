@@ -63,15 +63,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class RegionalOffice extends Model
 {
-    use SoftDeletes;
-
     public $table = 'om_oficinas_regionales';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -91,15 +86,15 @@ class RegionalOffice extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'titulo' => 'string',
-        'descripcion' => 'string',
-        'pais' => 'integer',
-        'ciudad' => 'integer',
-        'direccion' => 'string',
-        'telefono' => 'string',
+        'id'                  => 'integer',
+        'titulo'              => 'string',
+        'descripcion'         => 'string',
+        'pais'                => 'integer',
+        'ciudad'              => 'integer',
+        'direccion'           => 'string',
+        'telefono'            => 'string',
         'centro_distribucion' => 'integer',
-        'marca' => 'integer'
+        'marca'               => 'integer'
     ];
 
     /**
@@ -108,7 +103,7 @@ class RegionalOffice extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
@@ -122,9 +117,9 @@ class RegionalOffice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCiudade()
+    public function city()
     {
-        return $this->belongsTo(\App\Models\CnCiudade::class);
+        return $this->belongsTo(\App\Models\City::class, 'ciudad');
     }
 
     /**
@@ -138,9 +133,9 @@ class RegionalOffice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnPai()
+    public function country()
     {
-        return $this->belongsTo(\App\Models\CnPai::class);
+        return $this->belongsTo(\App\Models\Country::class, 'pais');
     }
 
     /**

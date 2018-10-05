@@ -53,7 +53,7 @@ class Client extends Model
     use SoftDeletes;
 
     public $table = 'cn_clientes';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -78,13 +78,13 @@ class Client extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'descripcion' => 'string',
+        'id'               => 'integer',
+        'descripcion'      => 'string',
         'numero_documento' => 'string',
-        'direccion' => 'string',
-        'email' => 'string',
-        'logo' => 'string',
-        'distribuidor' => 'integer'
+        'direccion'        => 'string',
+        'email'            => 'string',
+        'logo'             => 'string',
+        'distribuidor'     => 'integer'
     ];
 
     /**
@@ -93,15 +93,15 @@ class Client extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function omDistribuidore()
+    public function distributor()
     {
-        return $this->belongsTo(\App\Models\OmDistribuidore::class);
+        return $this->belongsTo(\App\Models\Distributor::class, 'distribuidor');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Models\Distributor;
 use App\Repositories\ClientRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class ClientController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -43,7 +45,10 @@ class ClientController extends AppBaseController
      */
     public function create()
     {
-        return view('clients.create');
+
+        $distributors = Distributor::all()->pluck('titulo');
+
+        return view('clients.create', compact('distributors'));
     }
 
     /**
@@ -52,6 +57,7 @@ class ClientController extends AppBaseController
      * @param CreateClientRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateClientRequest $request)
     {
@@ -107,7 +113,7 @@ class ClientController extends AppBaseController
     /**
      * Update the specified Client in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateClientRequest $request
      *
      * @return Response

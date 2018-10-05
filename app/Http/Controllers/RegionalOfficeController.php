@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateRegionalOfficeRequest;
 use App\Http\Requests\UpdateRegionalOfficeRequest;
+use App\Models\City;
+use App\Models\Country;
 use App\Repositories\RegionalOfficeRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,6 +28,7 @@ class RegionalOfficeController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -43,7 +46,10 @@ class RegionalOfficeController extends AppBaseController
      */
     public function create()
     {
-        return view('regional_offices.create');
+        $countries = Country::all()->pluck('descripcion', 'id');
+        $cities = City::all()->pluck('descripcion', 'id');
+
+        return view('regional_offices.create', compact('countries', 'cities'));
     }
 
     /**
@@ -52,6 +58,7 @@ class RegionalOfficeController extends AppBaseController
      * @param CreateRegionalOfficeRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRegionalOfficeRequest $request)
     {
@@ -94,6 +101,8 @@ class RegionalOfficeController extends AppBaseController
     public function edit($id)
     {
         $regionalOffice = $this->regionalOfficeRepository->findWithoutFail($id);
+        $countries = Country::all()->pluck('descripcion', 'id');
+        $cities = City::all()->pluck('descripcion', 'id');
 
         if (empty($regionalOffice)) {
             Flash::error('Regional Office not found');
@@ -101,16 +110,17 @@ class RegionalOfficeController extends AppBaseController
             return redirect(route('regionalOffices.index'));
         }
 
-        return view('regional_offices.edit')->with('regionalOffice', $regionalOffice);
+        return view('regional_offices.edit')->with(compact('regionalOffice', 'cities', 'countries'));
     }
 
     /**
      * Update the specified RegionalOffice in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateRegionalOfficeRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateRegionalOfficeRequest $request)
     {
