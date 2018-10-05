@@ -65,12 +65,10 @@ class CnUser extends Model
     use SoftDeletes;
 
     public $table = 'cn_usuarios';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+    const DELETED_AT = 'fecha_borrado';
 
 
     public $fillable = [
@@ -82,9 +80,6 @@ class CnUser extends Model
         'bloqueado',
         'resetear_password',
         'fecha_ultimo_login',
-        'fecha_creacion',
-        'fecha_actualizacion',
-        'fecha_borrado',
         'email'
     ];
 
@@ -94,15 +89,15 @@ class CnUser extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'id_persona' => 'integer',
-        'id_role' => 'integer',
-        'id_tipo_usuario' => 'integer',
-        'password' => 'string',
-        'usuario' => 'string',
-        'bloqueado' => 'boolean',
+        'id'                => 'integer',
+        'id_persona'        => 'integer',
+        'id_role'           => 'integer',
+        'id_tipo_usuario'   => 'integer',
+        'password'          => 'string',
+        'usuario'           => 'string',
+        'bloqueado'         => 'boolean',
         'resetear_password' => 'boolean',
-        'email' => 'string'
+        'email'             => 'string'
     ];
 
     /**
@@ -111,15 +106,15 @@ class CnUser extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnPersona()
+    public function person()
     {
-        return $this->belongsTo(\App\Models\CnPersona::class);
+        return $this->belongsTo(\App\Models\Person::class, 'id_persona');
     }
 
     /**

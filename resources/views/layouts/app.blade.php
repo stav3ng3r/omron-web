@@ -28,7 +28,7 @@
     @yield('css')
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue fixed">
     <div class="wrapper">
 
         <!-- Main Header -->

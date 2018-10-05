@@ -24,15 +24,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductBrand extends Model
 {
-    use SoftDeletes;
 
     public $table = 'pr_productos_marcas';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -47,7 +43,7 @@ class ProductBrand extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'          => 'integer',
         'descripcion' => 'string'
     ];
 
@@ -57,15 +53,15 @@ class ProductBrand extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omCentrosDistribucions()
+    public function distribution_centers()
     {
-        return $this->hasMany(\App\Models\OmCentrosDistribucion::class);
+        return $this->hasMany(\App\Models\DistributionCenter::class, 'marca');
     }
 
     /**

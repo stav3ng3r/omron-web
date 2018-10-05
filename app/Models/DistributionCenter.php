@@ -57,15 +57,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DistributionCenter extends Model
 {
-    use SoftDeletes;
-
     public $table = 'om_centros_distribucion';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -84,14 +79,14 @@ class DistributionCenter extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'titulo' => 'string',
-        'descripcion' => 'string',
-        'pais' => 'integer',
-        'ciudad' => 'integer',
-        'telefono' => 'string',
+        'id'            => 'integer',
+        'titulo'        => 'string',
+        'descripcion'   => 'string',
+        'pais'          => 'integer',
+        'ciudad'        => 'integer',
+        'telefono'      => 'string',
         'direccion_web' => 'string',
-        'marca' => 'integer'
+        'marca'         => 'integer'
     ];
 
     /**
@@ -100,38 +95,44 @@ class DistributionCenter extends Model
      * @var array
      */
     public static $rules = [
-        
+        'titulo'        => 'required|string:100',
+        'descripcion'   => 'required|string:100',
+        'pais'          => 'required|integer',
+        'ciudad'        => 'required|integer',
+        'marca'         => 'required|integer',
+        'telefono'      => 'required|min:9',
+        'direccion_web' => 'required|string|min:9',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCiudade()
+    public function city()
     {
-        return $this->belongsTo(\App\Models\CnCiudade::class);
+        return $this->belongsTo(\App\Models\City::class, 'ciudad');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosMarca()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\PrProductosMarca::class);
+        return $this->belongsTo(\App\Models\ProductBrand::class, 'marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnPai()
+    public function country()
     {
-        return $this->belongsTo(\App\Models\CnPai::class);
+        return $this->belongsTo(\App\Models\Country::class, 'pais');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omOficinasRegionales()
+    public function regional_offices()
     {
-        return $this->hasMany(\App\Models\OmOficinasRegionale::class);
+        return $this->hasMany(\App\Models\RegionalOffice::class);
     }
 }

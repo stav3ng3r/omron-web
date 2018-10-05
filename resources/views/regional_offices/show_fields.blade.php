@@ -23,14 +23,14 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Pais</td>
-    <td style="text-align: right">{{ $regionalOffice->pais }}</td>
+    <td style="text-align: right">{{ $regionalOffice->country->descripcion }}</td>
 </tr>
 
 <!-- Ciudad Field -->
 
 <tr>
     <td style="font-weight: bold; text-align: right">Ciudad</td>
-    <td style="text-align: right">{{ $regionalOffice->ciudad }}</td>
+    <td style="text-align: right">{{ $regionalOffice->city->descripcion }}</td>
 </tr>
 
 <!-- Direccion Field -->
@@ -51,13 +51,13 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Centro Distribucion</td>
-    <td style="text-align: right">{{ $regionalOffice->centro_distribucion }}</td>
+    <td style="text-align: right">{{ $regionalOffice->distribution_center->titulo }}</td>
 </tr>
 
 <!-- Marca Field -->
 
 <tr>
     <td style="font-weight: bold; text-align: right">Marca</td>
-    <td style="text-align: right">{{ $regionalOffice->marca }}</td>
+    <td style="text-align: right">{{ $regionalOffice->brand->descripcion }}</td>
 </tr>
 

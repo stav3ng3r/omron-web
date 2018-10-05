@@ -103,15 +103,20 @@ class RegionalOffice extends Model
      * @var array
      */
     public static $rules = [
-
+        'titulo'              => 'required|string|max:100',
+        'descripcion'         => 'required|string|max:100',
+        'pais'                => 'required|integer',
+        'ciudad'              => 'required|integer',
+        'centro_distribucion' => 'required|integer',
+        'marca'               => 'required|integer',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function omCentrosDistribucion()
+    public function distribution_center()
     {
-        return $this->belongsTo(\App\Models\OmCentrosDistribucion::class);
+        return $this->belongsTo(\App\Models\DistributionCenter::class, 'centro_distribucion');
     }
 
     /**
@@ -125,9 +130,9 @@ class RegionalOffice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosMarca()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\PrProductosMarca::class);
+        return $this->belongsTo(\App\Models\ProductBrand::class, 'marca');
     }
 
     /**
@@ -141,8 +146,8 @@ class RegionalOffice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omDistribuidores()
+    public function distributors()
     {
-        return $this->hasMany(\App\Models\OmDistribuidore::class);
+        return $this->hasMany(\App\Models\Distributor::class);
     }
 }

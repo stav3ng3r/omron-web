@@ -23,14 +23,14 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Pais</td>
-    <td style="text-align: right">{{ $distributionCenter->pais }}</td>
+    <td style="text-align: right">{{ $distributionCenter->country->descripcion }}</td>
 </tr>
 
 <!-- Ciudad Field -->
 
 <tr>
     <td style="font-weight: bold; text-align: right">Ciudad</td>
-    <td style="text-align: right">{{ $distributionCenter->ciudad }}</td>
+    <td style="text-align: right">{{ $distributionCenter->city->descripcion }}</td>
 </tr>
 
 <!-- Telefono Field -->
@@ -51,6 +51,6 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Marca</td>
-    <td style="text-align: right">{{ $distributionCenter->marca }}</td>
+    <td style="text-align: right">{{ $distributionCenter->brand->descripcion }}</td>
 </tr>
 

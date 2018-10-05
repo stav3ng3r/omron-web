@@ -6,6 +6,8 @@ use App\Http\Requests\CreateRegionalOfficeRequest;
 use App\Http\Requests\UpdateRegionalOfficeRequest;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\DistributionCenter;
+use App\Models\ProductBrand;
 use App\Repositories\RegionalOfficeRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -48,8 +50,11 @@ class RegionalOfficeController extends AppBaseController
     {
         $countries = Country::all()->pluck('descripcion', 'id');
         $cities = City::all()->pluck('descripcion', 'id');
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+        $distributionCenters = DistributionCenter::all()->pluck('titulo', 'id');
 
-        return view('regional_offices.create', compact('countries', 'cities'));
+        return view('regional_offices.create', compact('countries', 'cities', 'brands',
+            'distributionCenters'));
     }
 
     /**
@@ -66,7 +71,7 @@ class RegionalOfficeController extends AppBaseController
 
         $regionalOffice = $this->regionalOfficeRepository->create($input);
 
-        Flash::success('Regional Office saved successfully.');
+        Flash::success('Oficina Regional saved successfully.');
 
         return redirect(route('regionalOffices.index'));
     }
@@ -83,7 +88,7 @@ class RegionalOfficeController extends AppBaseController
         $regionalOffice = $this->regionalOfficeRepository->findWithoutFail($id);
 
         if (empty($regionalOffice)) {
-            Flash::error('Regional Office not found');
+            Flash::error('Oficina Regional no econtrada.');
 
             return redirect(route('regionalOffices.index'));
         }
@@ -103,14 +108,17 @@ class RegionalOfficeController extends AppBaseController
         $regionalOffice = $this->regionalOfficeRepository->findWithoutFail($id);
         $countries = Country::all()->pluck('descripcion', 'id');
         $cities = City::all()->pluck('descripcion', 'id');
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+        $distributionCenters = DistributionCenter::all()->pluck('titulo', 'id');
 
         if (empty($regionalOffice)) {
-            Flash::error('Regional Office not found');
+            Flash::error('Oficina Regional no econtrada.');
 
             return redirect(route('regionalOffices.index'));
         }
 
-        return view('regional_offices.edit')->with(compact('regionalOffice', 'cities', 'countries'));
+        return view('regional_offices.edit')->with(compact('regionalOffice', 'cities', 'countries', 'brands',
+            'distributionCenters'));
     }
 
     /**
@@ -127,14 +135,14 @@ class RegionalOfficeController extends AppBaseController
         $regionalOffice = $this->regionalOfficeRepository->findWithoutFail($id);
 
         if (empty($regionalOffice)) {
-            Flash::error('Regional Office not found');
+            Flash::error('Oficina Regional no econtrada.');
 
             return redirect(route('regionalOffices.index'));
         }
 
         $regionalOffice = $this->regionalOfficeRepository->update($request->all(), $id);
 
-        Flash::success('Regional Office updated successfully.');
+        Flash::success('Oficina Regional updated successfully.');
 
         return redirect(route('regionalOffices.index'));
     }
@@ -151,14 +159,14 @@ class RegionalOfficeController extends AppBaseController
         $regionalOffice = $this->regionalOfficeRepository->findWithoutFail($id);
 
         if (empty($regionalOffice)) {
-            Flash::error('Regional Office not found');
+            Flash::error('Oficina Regional no econtrada.');
 
             return redirect(route('regionalOffices.index'));
         }
 
         $this->regionalOfficeRepository->delete($id);
 
-        Flash::success('Regional Office deleted successfully.');
+        Flash::success('Oficina Regional deleted successfully.');
 
         return redirect(route('regionalOffices.index'));
     }

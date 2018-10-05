@@ -37,13 +37,13 @@
 <!-- Centro Distribucion Field -->
 <div class="form-group col-sm-6 @if($errors->has('centro_distribucion')) has-error @endif">
     {!! Form::label('centro_distribucion', 'Centro Distribucion:') !!}
-    {!! Form::number('centro_distribucion', NULL, ['class' => 'form-control']) !!}
+    {!! Form::select('centro_distribucion', $distributionCenters, old('centro_distribucion'), ['class' => 'form-control']) !!}
 </div>
 
 <!-- Marca Field -->
 <div class="form-group col-sm-6 @if($errors->has('marca')) has-error @endif">
     {!! Form::label('marca', 'Marca:') !!}
-    {!! Form::number('marca', NULL, ['class' => 'form-control']) !!}
+    {!! Form::select('marca', $brands, old('marca'), ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->
