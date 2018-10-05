@@ -1,0 +1,6 @@
+<!-- $FIELD_NAME_TITLE$ Field -->
+
+<tr>
+    <td style="font-weight: bold; text-align: right">$FIELD_NAME_TITLE$</td>
+    <td style="text-align: right">{{ $$MODEL_NAME_CAMEL$->$FIELD_NAME$ }}</td>
+</tr>

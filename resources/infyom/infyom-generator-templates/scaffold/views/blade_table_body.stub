@@ -1,0 +1,31 @@
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                $FIELD_HEADERS$
+                <th colspan="3">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($$MODEL_NAME_PLURAL_CAMEL$ as $$MODEL_NAME_CAMEL$)
+            <tr>
+                $FIELD_BODY$
+                <td>
+                    {!! Form::open(['route' => ['$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.destroy', $$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$], 'method' => 'delete']) !!}
+                    <div class='btn-group'>
+                        <a href="{!! route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.show', [$$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                        <a href="{!! route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.edit', [$$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$]) !!}" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+
+                        <a href="#" class="btn btn-danger btn-xs"
+                                               onclick="swal_delete('Eliminar $MODEL_NAME_HUMAN$',
+                                                       'Esta accion eliminara el $MODEL_NAME_HUMAN$ ' + '{{ $$MODEL_NAME_CAMEL$->name }}. Desea continuar?', 'delete_form_{{ $$MODEL_NAME_CAMEL$->$PRIMARY_KEY_NAME$ }}')"
+                                            >
+                            <i class="glyphicon glyphicon-trash"></i></a>
+                    </div>
+                    {!! Form::close() !!}
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
