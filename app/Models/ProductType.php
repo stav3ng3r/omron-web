@@ -30,16 +30,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductType extends Model
 {
-    use SoftDeletes;
 
     public $table = 'pr_productos_tipo';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
-
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
     public $fillable = [
         'id_categoria',
@@ -54,9 +49,9 @@ class ProductType extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'           => 'integer',
         'id_categoria' => 'integer',
-        'descripcion' => 'string'
+        'descripcion'  => 'string'
     ];
 
     /**
@@ -65,7 +60,7 @@ class ProductType extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**

@@ -30,15 +30,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductCategory extends Model
 {
-    use SoftDeletes;
 
     public $table = 'pr_productos_categorias';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     public $fillable = [
@@ -54,8 +50,8 @@ class ProductCategory extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'id_marca' => 'integer',
+        'id'          => 'integer',
+        'id_marca'    => 'integer',
         'descripcion' => 'string'
     ];
 
@@ -65,38 +61,39 @@ class ProductCategory extends Model
      * @var array
      */
     public static $rules = [
-        
+        'id_marca'    => 'required|integer',
+        'descripcion' => 'required|string'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosMarca()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\PrProductosMarca::class);
+        return $this->belongsTo(ProductBrand::class, 'id_marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omMultiplicadorDistribuidors()
+    public function distributor_multipliers()
     {
-        return $this->hasMany(\App\Models\OmMultiplicadorDistribuidor::class);
+        return $this->hasMany(DistributorMultiplier::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductosTipos()
+    public function product_types()
     {
-        return $this->hasMany(\App\Models\PrProductosTipo::class);
+        return $this->hasMany(ProductType::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductos()
+    public function products()
     {
-        return $this->hasMany(\App\Models\PrProducto::class);
+        return $this->hasMany(Product::class);
     }
 }

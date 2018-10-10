@@ -27,7 +27,8 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index') !!}" class="btn btn-default">Back</a>
+                        <a href="{!! route('$ROUTE_NAMED_PREFIX$$MODEL_NAME_PLURAL_CAMEL$.index') !!}" class="btn btn-default">
+                        <i class="fa fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>
             </div>

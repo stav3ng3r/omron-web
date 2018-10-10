@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -42,15 +41,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DistributorMultiplier extends Model
 {
-    use SoftDeletes;
 
     public $table = 'om_multiplicador_distribuidor';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -66,11 +61,11 @@ class DistributorMultiplier extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'                 => 'integer',
         'categoria_producto' => 'integer',
-        'distribuidor' => 'integer',
-        'descripcion' => 'string',
-        'porcentaje' => 'float'
+        'distribuidor'       => 'integer',
+        'descripcion'        => 'string',
+        'porcentaje'         => 'float'
     ];
 
     /**
@@ -79,22 +74,25 @@ class DistributorMultiplier extends Model
      * @var array
      */
     public static $rules = [
-        
+        'categoria_producto' => 'required|integer',
+        'distribuidor'       => 'required|integer',
+        'descripcion'        => 'required|string',
+        'porcentaje'         => 'required|numeric'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosCategoria()
+    public function product_category()
     {
-        return $this->belongsTo(\App\Models\PrProductosCategoria::class);
+        return $this->belongsTo(ProductCategory::class, 'categoria_producto');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function omDistribuidore()
+    public function distributor()
     {
-        return $this->belongsTo(\App\Models\OmDistribuidore::class);
+        return $this->belongsTo(Distributor::class, 'distribuidor');
     }
 }

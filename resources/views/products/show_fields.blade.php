@@ -43,22 +43,22 @@
 <!-- Id Producto Tipo Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Id Producto Tipo</td>
-    <td style="text-align: right">{{ $product->id_producto_tipo }}</td>
+    <td style="font-weight: bold; text-align: right">Tipo</td>
+    <td style="text-align: right">{{ $product->product_type->descripcion }}</td>
 </tr>
 
 <!-- Id Producto Marca Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Id Producto Marca</td>
-    <td style="text-align: right">{{ $product->id_producto_marca }}</td>
+    <td style="font-weight: bold; text-align: right">Marca</td>
+    <td style="text-align: right">{{ $product->brand->descripcion }}</td>
 </tr>
 
 <!-- Id Producto Categoria Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Id Producto Categoria</td>
-    <td style="text-align: right">{{ $product->id_producto_categoria }}</td>
+    <td style="font-weight: bold; text-align: right">Categoria</td>
+    <td style="text-align: right">{{ $product->product_category->descripcion }}</td>
 </tr>
 
 <!-- Precio Venta Field -->
@@ -68,25 +68,14 @@
     <td style="text-align: right">{{ $product->precio_venta }}</td>
 </tr>
 
-<!-- Tiene Imagen Field -->
-
-<tr>
-    <td style="font-weight: bold; text-align: right">Tiene Imagen</td>
-    <td style="text-align: right">{{ $product->tiene_imagen }}</td>
-</tr>
-
 <!-- Path Imagen Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Path Imagen</td>
-    <td style="text-align: right">{{ $product->path_imagen }}</td>
-</tr>
-
-<!-- Imagen Field -->
-
-<tr>
     <td style="font-weight: bold; text-align: right">Imagen</td>
-    <td style="text-align: right">{{ $product->imagen }}</td>
+    <td style="text-align: right">
+        <img style="max-width: 128px; max-height: 128px;"
+             src="{!! $product->path_imagen !!}" class="img-responsive pull-right" alt="">
+    </td>
 </tr>
 
 <!-- Fecha Creacion Field -->

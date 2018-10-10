@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\ProductBrand;
+use App\Models\ProductCategory;
+use App\Models\ProductType;
 use App\Repositories\ProductRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,11 +29,13 @@ class ProductController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->productRepository->pushCriteria(new RequestCriteria($request));
-        $products = $this->productRepository->all();
+        $products = $this->productRepository->with('product_type', 'product_category', 'product_brand')
+            ->paginate(30);
 
         return view('products.index')
             ->with('products', $products);
@@ -43,7 +48,12 @@ class ProductController extends AppBaseController
      */
     public function create()
     {
-        return view('products.create');
+
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+        $types = ProductType::all()->pluck('descripcion', 'id');
+
+        return view('products.create', compact('brands', 'categories', 'types'));
     }
 
     /**
@@ -52,14 +62,19 @@ class ProductController extends AppBaseController
      * @param CreateProductRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateProductRequest $request)
     {
         $input = $request->all();
 
+        if (!empty($input['path_imagen']) OR !empty($input['imagen']))
+            $input['tiene_imagen'] = TRUE;
+
         $product = $this->productRepository->create($input);
 
-        Flash::success('Product saved successfully.');
+        Flash::success('Producto guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('products.index'));
     }
@@ -76,7 +91,7 @@ class ProductController extends AppBaseController
         $product = $this->productRepository->findWithoutFail($id);
 
         if (empty($product)) {
-            Flash::error('Product not found');
+            Flash::error('Producto no encontrado.');
 
             return redirect(route('products.index'));
         }
@@ -96,35 +111,41 @@ class ProductController extends AppBaseController
         $product = $this->productRepository->findWithoutFail($id);
 
         if (empty($product)) {
-            Flash::error('Product not found');
+            Flash::error('Producto no encontrado.');
 
             return redirect(route('products.index'));
         }
 
-        return view('products.edit')->with('product', $product);
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+        $types = ProductType::all()->pluck('descripcion', 'id');
+
+        return view('products.edit')->with(compact('product', 'brands', 'types', 'categories'));
     }
 
     /**
      * Update the specified Product in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductRequest $request)
     {
         $product = $this->productRepository->findWithoutFail($id);
 
         if (empty($product)) {
-            Flash::error('Product not found');
+            Flash::error('Producto no encontrado.');
 
             return redirect(route('products.index'));
         }
 
         $product = $this->productRepository->update($request->all(), $id);
 
-        Flash::success('Product updated successfully.');
+        Flash::success('Producto guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('products.index'));
     }
@@ -141,14 +162,15 @@ class ProductController extends AppBaseController
         $product = $this->productRepository->findWithoutFail($id);
 
         if (empty($product)) {
-            Flash::error('Product not found');
+            Flash::error('Producto no encontrado.');
 
             return redirect(route('products.index'));
         }
 
         $this->productRepository->delete($id);
 
-        Flash::success('Product deleted successfully.');
+        Flash::success('Product eliminado exitosamente.');
+        Flash::important();
 
         return redirect(route('products.index'));
     }

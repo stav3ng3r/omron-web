@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDistributorMultiplierRequest;
 use App\Http\Requests\UpdateDistributorMultiplierRequest;
+use App\Models\Distributor;
+use App\Models\ProductCategory;
 use App\Repositories\DistributorMultiplierRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,11 +28,12 @@ class DistributorMultiplierController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->distributorMultiplierRepository->pushCriteria(new RequestCriteria($request));
-        $distributorMultipliers = $this->distributorMultiplierRepository->all();
+        $distributorMultipliers = $this->distributorMultiplierRepository->with('distributor')->all();
 
         return view('distributor_multipliers.index')
             ->with('distributorMultipliers', $distributorMultipliers);
@@ -43,7 +46,10 @@ class DistributorMultiplierController extends AppBaseController
      */
     public function create()
     {
-        return view('distributor_multipliers.create');
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+
+        return view('distributor_multipliers.create', compact('distributors', 'categories'));
     }
 
     /**
@@ -52,6 +58,7 @@ class DistributorMultiplierController extends AppBaseController
      * @param CreateDistributorMultiplierRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateDistributorMultiplierRequest $request)
     {
@@ -59,7 +66,8 @@ class DistributorMultiplierController extends AppBaseController
 
         $distributorMultiplier = $this->distributorMultiplierRepository->create($input);
 
-        Flash::success('Distributor Multiplier saved successfully.');
+        Flash::success('Multiplicador guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('distributorMultipliers.index'));
     }
@@ -76,7 +84,7 @@ class DistributorMultiplierController extends AppBaseController
         $distributorMultiplier = $this->distributorMultiplierRepository->findWithoutFail($id);
 
         if (empty($distributorMultiplier)) {
-            Flash::error('Distributor Multiplier not found');
+            Flash::error('Multiplicador no encontrado.');
 
             return redirect(route('distributorMultipliers.index'));
         }
@@ -96,35 +104,41 @@ class DistributorMultiplierController extends AppBaseController
         $distributorMultiplier = $this->distributorMultiplierRepository->findWithoutFail($id);
 
         if (empty($distributorMultiplier)) {
-            Flash::error('Distributor Multiplier not found');
+            Flash::error('Multiplicador no encontrado.');
 
             return redirect(route('distributorMultipliers.index'));
         }
 
-        return view('distributor_multipliers.edit')->with('distributorMultiplier', $distributorMultiplier);
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+
+        return view('distributor_multipliers.edit')->with(compact('distributorMultiplier',
+            'distributors', 'categories'));
     }
 
     /**
      * Update the specified DistributorMultiplier in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateDistributorMultiplierRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateDistributorMultiplierRequest $request)
     {
         $distributorMultiplier = $this->distributorMultiplierRepository->findWithoutFail($id);
 
         if (empty($distributorMultiplier)) {
-            Flash::error('Distributor Multiplier not found');
+            Flash::error('Multiplicador no encontrado.');
 
             return redirect(route('distributorMultipliers.index'));
         }
 
         $distributorMultiplier = $this->distributorMultiplierRepository->update($request->all(), $id);
 
-        Flash::success('Distributor Multiplier updated successfully.');
+        Flash::success('Multiplicador actualizado exitosamente.');
+        Flash::important();
 
         return redirect(route('distributorMultipliers.index'));
     }
@@ -141,14 +155,15 @@ class DistributorMultiplierController extends AppBaseController
         $distributorMultiplier = $this->distributorMultiplierRepository->findWithoutFail($id);
 
         if (empty($distributorMultiplier)) {
-            Flash::error('Distributor Multiplier not found');
+            Flash::error('Multiplicador no encontrado.');
 
             return redirect(route('distributorMultipliers.index'));
         }
 
         $this->distributorMultiplierRepository->delete($id);
 
-        Flash::success('Distributor Multiplier deleted successfully.');
+        Flash::success('Multiplicador eliminado exitosamente');
+        Flash::important();
 
         return redirect(route('distributorMultipliers.index'));
     }

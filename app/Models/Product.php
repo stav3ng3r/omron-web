@@ -116,12 +116,10 @@ class Product extends Model
     use SoftDeletes;
 
     public $table = 'pr_productos';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+    const DELETED_AT = 'fecha_borrado';
 
 
     public $fillable = [
@@ -153,19 +151,19 @@ class Product extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'nombre' => 'string',
-        'descripcion' => 'string',
-        'codigo' => 'string',
-        'codigo_barra' => 'string',
-        'activo' => 'boolean',
-        'id_producto_tipo' => 'integer',
-        'id_producto_marca' => 'integer',
+        'id'                    => 'integer',
+        'nombre'                => 'string',
+        'descripcion'           => 'string',
+        'codigo'                => 'string',
+        'codigo_barra'          => 'string',
+        'activo'                => 'boolean',
+        'id_producto_tipo'      => 'integer',
+        'id_producto_marca'     => 'integer',
         'id_producto_categoria' => 'integer',
-        'precio_venta' => 'integer',
-        'tiene_imagen' => 'boolean',
-        'path_imagen' => 'string',
-        'imagen' => 'string'
+        'precio_venta'          => 'integer',
+        'tiene_imagen'          => 'boolean',
+        'path_imagen'           => 'string',
+        'imagen'                => 'string'
     ];
 
     /**
@@ -174,31 +172,39 @@ class Product extends Model
      * @var array
      */
     public static $rules = [
-        
+        'nombre'                => 'required|string',
+        'descripcion'           => 'required|string',
+        'codigo'                => 'string',
+        'activo'                => 'boolean',
+        'id_producto_tipo'      => 'required|required|integer',
+        'id_producto_marca'     => 'required|integer',
+        'id_producto_categoria' => 'required|integer',
+        'precio_venta'          => 'required|numeric',
+        'path_imagen'           => 'nullable|string',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosCategoria()
+    public function product_category()
     {
-        return $this->belongsTo(\App\Models\PrProductosCategoria::class);
+        return $this->belongsTo(ProductCategory::class, 'id_producto_categoria');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosMarca()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\PrProductosMarca::class);
+        return $this->belongsTo(ProductBrand::class, 'id_producto_marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosTipo()
+    public function product_type()
     {
-        return $this->belongsTo(\App\Models\PrProductosTipo::class);
+        return $this->belongsTo(ProductType::class, 'id_producto_tipo');
     }
 
     /**
@@ -220,9 +226,9 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductosDetalles()
+    public function product_details()
     {
-        return $this->hasMany(\App\Models\PrProductosDetalle::class);
+        return $this->hasMany(\App\Models\ProductDetail::class);
     }
 
     /**
@@ -255,5 +261,13 @@ class Product extends Model
     public function stStocks()
     {
         return $this->hasMany(\App\Models\StStock::class);
+    }
+
+    public function getImageAttribute(){
+        if($this->attributes['path_imagen'])
+            return $this->attributes['path_imagen'];
+
+        if($this->attributes['imagen'])
+            return base64_decode($this->attributes['imagen']);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
+use App\Models\ProductBrand;
 use App\Repositories\ProductCategoryRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,11 +27,12 @@ class ProductCategoryController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->productCategoryRepository->pushCriteria(new RequestCriteria($request));
-        $productCategories = $this->productCategoryRepository->all();
+        $productCategories = $this->productCategoryRepository->with('brand')->all();
 
         return view('product_categories.index')
             ->with('productCategories', $productCategories);
@@ -43,7 +45,9 @@ class ProductCategoryController extends AppBaseController
      */
     public function create()
     {
-        return view('product_categories.create');
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+
+        return view('product_categories.create', compact('brands'));
     }
 
     /**
@@ -52,6 +56,7 @@ class ProductCategoryController extends AppBaseController
      * @param CreateProductCategoryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateProductCategoryRequest $request)
     {
@@ -59,7 +64,8 @@ class ProductCategoryController extends AppBaseController
 
         $productCategory = $this->productCategoryRepository->create($input);
 
-        Flash::success('Product Category saved successfully.');
+        Flash::success('Categoria guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('productCategories.index'));
     }
@@ -76,7 +82,7 @@ class ProductCategoryController extends AppBaseController
         $productCategory = $this->productCategoryRepository->findWithoutFail($id);
 
         if (empty($productCategory)) {
-            Flash::error('Product Category not found');
+            Flash::error('Categoria no encontrada');
 
             return redirect(route('productCategories.index'));
         }
@@ -96,35 +102,39 @@ class ProductCategoryController extends AppBaseController
         $productCategory = $this->productCategoryRepository->findWithoutFail($id);
 
         if (empty($productCategory)) {
-            Flash::error('Product Category not found');
+            Flash::error('Categoria no encontrada');
 
             return redirect(route('productCategories.index'));
         }
 
-        return view('product_categories.edit')->with('productCategory', $productCategory);
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
+
+        return view('product_categories.edit')->with(compact('productCategory', 'brands'));
     }
 
     /**
      * Update the specified ProductCategory in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductCategoryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductCategoryRequest $request)
     {
         $productCategory = $this->productCategoryRepository->findWithoutFail($id);
 
         if (empty($productCategory)) {
-            Flash::error('Product Category not found');
+            Flash::error('Categoria no encontrada');
 
             return redirect(route('productCategories.index'));
         }
 
         $productCategory = $this->productCategoryRepository->update($request->all(), $id);
 
-        Flash::success('Product Category updated successfully.');
+        Flash::success('Categoria actualizada exitosamente.');
+        Flash::important();
 
         return redirect(route('productCategories.index'));
     }
@@ -141,14 +151,15 @@ class ProductCategoryController extends AppBaseController
         $productCategory = $this->productCategoryRepository->findWithoutFail($id);
 
         if (empty($productCategory)) {
-            Flash::error('Product Category not found');
+            Flash::error('Categoria no encontrada');
 
             return redirect(route('productCategories.index'));
         }
 
         $this->productCategoryRepository->delete($id);
 
-        Flash::success('Product Category deleted successfully.');
+        Flash::success('Categoria eliminada exitosamente.');
+        Flash::important();
 
         return redirect(route('productCategories.index'));
     }

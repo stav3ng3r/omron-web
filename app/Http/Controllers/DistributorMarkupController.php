@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDistributorMarkupRequest;
 use App\Http\Requests\UpdateDistributorMarkupRequest;
+use App\Models\Distributor;
 use App\Repositories\DistributorMarkupRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -26,11 +27,12 @@ class DistributorMarkupController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->distributorMarkupRepository->pushCriteria(new RequestCriteria($request));
-        $distributorMarkups = $this->distributorMarkupRepository->all();
+        $distributorMarkups = $this->distributorMarkupRepository->with('distributor')->all();
 
         return view('distributor_markups.index')
             ->with('distributorMarkups', $distributorMarkups);
@@ -43,7 +45,9 @@ class DistributorMarkupController extends AppBaseController
      */
     public function create()
     {
-        return view('distributor_markups.create');
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+
+        return view('distributor_markups.create', compact('distributors'));
     }
 
     /**
@@ -52,6 +56,7 @@ class DistributorMarkupController extends AppBaseController
      * @param CreateDistributorMarkupRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateDistributorMarkupRequest $request)
     {
@@ -59,7 +64,8 @@ class DistributorMarkupController extends AppBaseController
 
         $distributorMarkup = $this->distributorMarkupRepository->create($input);
 
-        Flash::success('Distributor Markup saved successfully.');
+        Flash::success('Markup guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('distributorMarkups.index'));
     }
@@ -76,7 +82,7 @@ class DistributorMarkupController extends AppBaseController
         $distributorMarkup = $this->distributorMarkupRepository->findWithoutFail($id);
 
         if (empty($distributorMarkup)) {
-            Flash::error('Distributor Markup not found');
+            Flash::error('Markup no encontrado.');
 
             return redirect(route('distributorMarkups.index'));
         }
@@ -96,35 +102,39 @@ class DistributorMarkupController extends AppBaseController
         $distributorMarkup = $this->distributorMarkupRepository->findWithoutFail($id);
 
         if (empty($distributorMarkup)) {
-            Flash::error('Distributor Markup not found');
+            Flash::error('Markup no encontrado.');
 
             return redirect(route('distributorMarkups.index'));
         }
 
-        return view('distributor_markups.edit')->with('distributorMarkup', $distributorMarkup);
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+
+        return view('distributor_markups.edit')->with(compact('distributorMarkup', 'distributors'));
     }
 
     /**
      * Update the specified DistributorMarkup in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateDistributorMarkupRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateDistributorMarkupRequest $request)
     {
         $distributorMarkup = $this->distributorMarkupRepository->findWithoutFail($id);
 
         if (empty($distributorMarkup)) {
-            Flash::error('Distributor Markup not found');
+            Flash::error('Markup no encontrado.');
 
             return redirect(route('distributorMarkups.index'));
         }
 
         $distributorMarkup = $this->distributorMarkupRepository->update($request->all(), $id);
 
-        Flash::success('Distributor Markup updated successfully.');
+        Flash::success('Markup actualizado exitosamente.');
+        Flash::important();
 
         return redirect(route('distributorMarkups.index'));
     }
@@ -141,14 +151,15 @@ class DistributorMarkupController extends AppBaseController
         $distributorMarkup = $this->distributorMarkupRepository->findWithoutFail($id);
 
         if (empty($distributorMarkup)) {
-            Flash::error('Distributor Markup not found');
+            Flash::error('Markup no encontrado.');
 
             return redirect(route('distributorMarkups.index'));
         }
 
         $this->distributorMarkupRepository->delete($id);
 
-        Flash::success('Distributor Markup deleted successfully.');
+        Flash::success('Markup borrado exitosamente.');
+        Flash::important();
 
         return redirect(route('distributorMarkups.index'));
     }

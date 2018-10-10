@@ -9,7 +9,7 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Id Marca</td>
-    <td style="text-align: right">{{ $productCategory->id_marca }}</td>
+    <td style="text-align: right">{{ $productCategory->brand->descripcion }}</td>
 </tr>
 
 <!-- Descripcion Field -->
