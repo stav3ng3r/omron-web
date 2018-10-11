@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Product;
+use App\Models\ProductAccessory;
 use App\Models\ProductBrand;
 use App\Models\ProductCategory;
 use App\Models\ProductType;
@@ -37,8 +39,8 @@ class ProductController extends AppBaseController
         $products = $this->productRepository->with('product_type', 'product_category', 'product_brand')
             ->paginate(30);
 
-        return view('products.index')
-            ->with('products', $products);
+
+        return view('products.index')->with(compact('products'));
     }
 
     /**
@@ -88,7 +90,7 @@ class ProductController extends AppBaseController
      */
     public function show($id)
     {
-        $product = $this->productRepository->findWithoutFail($id);
+        $product = $this->productRepository->with(['details', 'accessories'])->findWithoutFail($id);
 
         if (empty($product)) {
             Flash::error('Producto no encontrado.');
@@ -96,7 +98,12 @@ class ProductController extends AppBaseController
             return redirect(route('products.index'));
         }
 
-        return view('products.show')->with('product', $product);
+        $productsList = Product::all()->pluck('nombre', 'id');
+
+        $productDetails = $product->details;
+        $productAccessories = $product->accessories;
+
+        return view('products.show')->with(compact('productDetails', 'product', 'productAccessories', 'productsList'));
     }
 
     /**

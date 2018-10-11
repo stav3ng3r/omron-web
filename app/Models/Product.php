@@ -207,6 +207,26 @@ class Product extends Model
         return $this->belongsTo(ProductType::class, 'id_producto_tipo');
     }
 
+    public function accessories()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'pr_productos_accesorios',
+            'codigo_producto_principal',
+            'codigo_producto_accesorio',
+            'codigo',
+            'codigo'
+        );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function details()
+    {
+        return $this->hasMany(ProductDetail::class, 'id_producto');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
@@ -221,14 +241,6 @@ class Product extends Model
     public function omPosDetalles()
     {
         return $this->hasMany(\App\Models\OmPosDetalle::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function product_details()
-    {
-        return $this->hasMany(\App\Models\ProductDetail::class);
     }
 
     /**
@@ -263,11 +275,12 @@ class Product extends Model
         return $this->hasMany(\App\Models\StStock::class);
     }
 
-    public function getImageAttribute(){
-        if($this->attributes['path_imagen'])
+    public function getImageAttribute()
+    {
+        if ($this->attributes['path_imagen'])
             return $this->attributes['path_imagen'];
 
-        if($this->attributes['imagen'])
+        if ($this->attributes['imagen'])
             return base64_decode($this->attributes['imagen']);
     }
 }

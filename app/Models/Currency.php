@@ -32,7 +32,7 @@ class Currency extends Model
     use SoftDeletes;
 
     public $table = 'cn_monedas';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -53,9 +53,9 @@ class Currency extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'          => 'integer',
         'descripcion' => 'string',
-        'simbolo' => 'string'
+        'simbolo'     => 'string'
     ];
 
     /**
@@ -64,7 +64,7 @@ class Currency extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     /**
@@ -73,14 +73,6 @@ class Currency extends Model
     public function omPosDetalles()
     {
         return $this->hasMany(\App\Models\OmPosDetalle::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function cnCotizaciones()
-    {
-        return $this->hasMany(\App\Models\CnCotizacione::class);
     }
 
     /**

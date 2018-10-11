@@ -40,7 +40,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', 'ProductController');
     Route::resource('productAccessories', 'ProductAccessoryController');
     Route::resource('productCategories', 'ProductCategoryController');
-    Route::resource('productDetails', 'ProductDetailController');
+
+    Route::prefix('products/{product}/details')->group(function () {
+        Route::get('create', 'ProductDetailController@create')->name('productDetails.create');
+        Route::post('/', 'ProductDetailController@store')->name('productDetails.store');
+        Route::patch('{productDetail}', 'ProductDetailController@update')->name('productDetails.update');
+        Route::delete('{productDetail}', 'ProductDetailController@destroy')->name('productDetails.destroy');
+        Route::get('/', 'ProductDetailController@index')->name('productDetails.index');
+        Route::get('{productDetail}/edit', 'ProductDetailController@edit')->name('productDetails.edit');
+    });
+
+    Route::prefix('products/{product}/accessories')->group(function () {
+        Route::post('/', 'ProductAccessoryController@store')->name('productAccessories.store');
+        Route::delete('{productAccessory}', 'ProductAccessoryController@destroy')->name('productAccessories.destroy');
+    });
+
+
     Route::resource('productImages', 'ProductImageController');
     Route::resource('productBrands', 'ProductBrandController');
     Route::resource('productPromotions', 'ProductPromotionController');

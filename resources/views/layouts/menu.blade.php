@@ -138,17 +138,8 @@
             <a href="{!! route('products.index') !!}"><i class="fa fa-cube"></i><span>Productos</span></a>
         </li>
 
-        <li class="{{ Request::is('productAccessories*') ? 'active' : '' }}">
-            <a href="{!! route('productAccessories.index') !!}"><i
-                        class="fa fa-circle"></i><span>Accesorios</span></a>
-        </li>
-
         <li class="{{ Request::is('productCategories*') ? 'active' : '' }}">
             <a href="{!! route('productCategories.index') !!}"><i class="fa fa-cubes"></i><span>Categorias</span></a>
-        </li>
-
-        <li class="{{ Request::is('productDetails*') ? 'active' : '' }}">
-            <a href="{!! route('productDetails.index') !!}"><i class="fa fa-list"></i><span>Detalles</span></a>
         </li>
 
         <li class="{{ Request::is('productImages*') ? 'active' : '' }}">

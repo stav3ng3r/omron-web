@@ -90,16 +90,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductDetail extends Model
 {
-    use SoftDeletes;
 
     public $table = 'pr_productos_detalle';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'id_producto',
@@ -124,21 +119,21 @@ class ProductDetail extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'id_producto' => 'integer',
-        'numero_contactos' => 'string',
-        'voltaje_maximo' => 'string',
-        'voltaje_minimo' => 'string',
-        'corriente_minima' => 'string',
-        'corriente_maxima' => 'string',
+        'id'                => 'integer',
+        'id_producto'       => 'integer',
+        'numero_contactos'  => 'string',
+        'voltaje_maximo'    => 'string',
+        'voltaje_minimo'    => 'string',
+        'corriente_minima'  => 'string',
+        'corriente_maxima'  => 'string',
         'cantidad_entradas' => 'string',
-        'cantidad_salidas' => 'string',
-        'tipo_terminal' => 'string',
+        'cantidad_salidas'  => 'string',
+        'tipo_terminal'     => 'string',
         'capacidad_memoria' => 'string',
-        'extra1' => 'string',
-        'extra2' => 'string',
-        'extra3' => 'string',
-        'codigo' => 'string'
+        'extra1'            => 'string',
+        'extra2'            => 'string',
+        'extra3'            => 'string',
+        'codigo'            => 'string'
     ];
 
     /**
@@ -147,14 +142,25 @@ class ProductDetail extends Model
      * @var array
      */
     public static $rules = [
-        
+//        'numero_contactos'  => 'string',
+//        'voltaje_maximo'    => 'string',
+//        'voltaje_minimo'    => 'string',
+//        'corriente_minima'  => 'string',
+//        'corriente_maxima'  => 'string',
+//        'cantidad_entradas' => 'string',
+//        'cantidad_salidas'  => 'string',
+//        'tipo_terminal'     => 'string',
+//        'capacidad_memoria' => 'string',
+//        'extra1'            => 'string',
+//        'extra2'            => 'string',
+//        'extra3'            => 'string',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProducto()
+    public function product()
     {
-        return $this->belongsTo(\App\Models\PrProducto::class);
+        return $this->belongsTo(Product::class, 'id_producto');
     }
 }
