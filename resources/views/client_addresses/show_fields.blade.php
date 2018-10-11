@@ -16,14 +16,14 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Pais</td>
-    <td style="text-align: right">{{ $clientAddress->pais }}</td>
+    <td style="text-align: right">{{ $clientAddress->country->descripcion }}</td>
 </tr>
 
 <!-- Ciudad Field -->
 
 <tr>
     <td style="font-weight: bold; text-align: right">Ciudad</td>
-    <td style="text-align: right">{{ $clientAddress->ciudad }}</td>
+    <td style="text-align: right">{{ $clientAddress->city->descripcion }}</td>
 </tr>
 
 <!-- Direccion Entrega Field -->
@@ -51,6 +51,6 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Cliente</td>
-    <td style="text-align: right">{{ $clientAddress->cliente }}</td>
+    <td style="text-align: right">{{ $clientAddress->client->descripcion }}</td>
 </tr>
 

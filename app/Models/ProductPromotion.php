@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -31,15 +30,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductPromotion extends Model
 {
-    use SoftDeletes;
-
     public $table = 'pr_productos_promocion';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'desde',
+        'hasta',
+    ];
 
 
     public $fillable = [
@@ -56,8 +55,8 @@ class ProductPromotion extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'id_producto' => 'integer',
+        'id'           => 'integer',
+        'id_producto'  => 'integer',
         'distribuidor' => 'integer'
     ];
 
@@ -67,22 +66,25 @@ class ProductPromotion extends Model
      * @var array
      */
     public static $rules = [
-        
+        'id_producto'  => 'required|integer',
+        'distribuidor' => 'nullable|integer',
+        'desde'        => 'required|date:m/d/Y',
+        'hasta'        => 'required|date:m/d/Y',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProducto()
+    public function product()
     {
-        return $this->belongsTo(\App\Models\PrProducto::class);
+        return $this->belongsTo(Product::class, 'id_producto');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function omDistribuidore()
+    public function distributor()
     {
-        return $this->belongsTo(\App\Models\OmDistribuidore::class);
+        return $this->belongsTo(Distributor::class, 'distribuidor');
     }
 }

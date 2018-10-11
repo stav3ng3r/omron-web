@@ -33,7 +33,7 @@ function swal_delete(title, text, formId) {
         });
 }
 
-$( document ).ready(function() {
+$(document).ready(function () {
     //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
         checkboxClass: 'icheckbox_minimal-blue',
@@ -48,6 +48,13 @@ $( document ).ready(function() {
     $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
         checkboxClass: 'icheckbox_flat-green',
         radioClass: 'iradio_flat-green'
+    });
+
+
+    $('.select2').select2({
+        placeholder: 'Selecciona un item',
+        allowClear: true,
+        theme: 'bootstrap'
     });
 
 });

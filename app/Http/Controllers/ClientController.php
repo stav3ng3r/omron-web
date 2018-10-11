@@ -32,7 +32,8 @@ class ClientController extends AppBaseController
     public function index(Request $request)
     {
         $this->clientRepository->pushCriteria(new RequestCriteria($request));
-        $clients = $this->clientRepository->all();
+        $clients = $this->clientRepository->with('distributor')
+            ->paginate(30);
 
         return view('clients.index')
             ->with('clients', $clients);
@@ -46,7 +47,8 @@ class ClientController extends AppBaseController
     public function create()
     {
 
-        $distributors = Distributor::all()->pluck('titulo');
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+        $distributors = array_merge(['' => ''], $distributors);
 
         return view('clients.create', compact('distributors'));
     }
@@ -65,7 +67,8 @@ class ClientController extends AppBaseController
 
         $client = $this->clientRepository->create($input);
 
-        Flash::success('Client saved successfully.');
+        Flash::success('Cliente guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('clients.index'));
     }
@@ -82,7 +85,7 @@ class ClientController extends AppBaseController
         $client = $this->clientRepository->findWithoutFail($id);
 
         if (empty($client)) {
-            Flash::error('Client not found');
+            Flash::error('Cliente no encontrado.');
 
             return redirect(route('clients.index'));
         }
@@ -102,12 +105,14 @@ class ClientController extends AppBaseController
         $client = $this->clientRepository->findWithoutFail($id);
 
         if (empty($client)) {
-            Flash::error('Client not found');
+            Flash::error('Cliente no encontrado.');
 
             return redirect(route('clients.index'));
         }
 
-        return view('clients.edit')->with('client', $client);
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+
+        return view('clients.edit')->with(compact('client', 'distributors'));
     }
 
     /**
@@ -117,20 +122,22 @@ class ClientController extends AppBaseController
      * @param UpdateClientRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateClientRequest $request)
     {
         $client = $this->clientRepository->findWithoutFail($id);
 
         if (empty($client)) {
-            Flash::error('Client not found');
+            Flash::error('Cliente no encontrado.');
 
             return redirect(route('clients.index'));
         }
 
         $client = $this->clientRepository->update($request->all(), $id);
 
-        Flash::success('Client updated successfully.');
+        Flash::success('Cliente actualizado correctamente');
+        Flash::important();
 
         return redirect(route('clients.index'));
     }
@@ -147,14 +154,15 @@ class ClientController extends AppBaseController
         $client = $this->clientRepository->findWithoutFail($id);
 
         if (empty($client)) {
-            Flash::error('Client not found');
+            Flash::error('Cliente no encontrado.');
 
             return redirect(route('clients.index'));
         }
 
         $this->clientRepository->delete($id);
 
-        Flash::success('Client deleted successfully.');
+        Flash::success('Cliente eliminado correctamente.');
+        Flash::important();
 
         return redirect(route('clients.index'));
     }

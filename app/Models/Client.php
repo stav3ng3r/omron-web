@@ -54,8 +54,8 @@ class Client extends Model
 
     public $table = 'cn_clientes';
 
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     protected $dates = ['deleted_at'];
@@ -93,7 +93,12 @@ class Client extends Model
      * @var array
      */
     public static $rules = [
-
+        'descripcion'      => 'required|string',
+        'numero_documento' => 'required|string',
+        'direccion'        => 'required|string',
+        'email'            => 'required|email',
+        'logo'             => 'required|url',
+        'distribuidor'     => 'nullable|integer'
     ];
 
     /**
@@ -101,23 +106,23 @@ class Client extends Model
      **/
     public function distributor()
     {
-        return $this->belongsTo(\App\Models\Distributor::class, 'distribuidor');
+        return $this->belongsTo(Distributor::class, 'distribuidor');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnClienteContactos()
+    public function contacts()
     {
-        return $this->hasMany(\App\Models\CnClienteContacto::class);
+        return $this->hasMany(ClientContact::class, 'id_cliente');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnClientesFormaPagos()
+    public function payment_methods()
     {
-        return $this->hasMany(\App\Models\CnClientesFormaPago::class);
+        return $this->hasMany(ClientPaymentMethod::class, 'cliente');
     }
 
     /**
@@ -131,9 +136,9 @@ class Client extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnClientesDireccionEntregas()
+    public function addresses()
     {
-        return $this->hasMany(\App\Models\CnClientesDireccionEntrega::class);
+        return $this->hasMany(ClientAddress::class, 'cliente');
     }
 
     /**

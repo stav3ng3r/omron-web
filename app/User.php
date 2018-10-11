@@ -32,6 +32,7 @@ class User extends Authenticatable
     protected $table = 'auth.users';
 
     static $rules = [
+        'role'     => 'required|integer',
         'username' => 'required|string|max:255',
         'name'     => 'required|string|max:255',
         'email'    => 'required|string|email|max:255',
@@ -40,8 +41,22 @@ class User extends Authenticatable
 
     static $messages = [];
 
+    /**
+     * @param $value
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = \Hash::make($value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoleAttribute()
+    {
+        if ($role = $this->roles()->first())
+            return $role;
+
+        return NULL;
     }
 }

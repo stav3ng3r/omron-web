@@ -16,6 +16,14 @@
     {!! Form::email('email', NULL, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Role Field -->
+<div class="form-group col-sm-6 @if($errors->has('role')) has-error @endif">
+    {!! Form::label('role', 'Rol de Usuario:') !!}
+    {!! Form::select('role', $roles, NULL, ['class' => 'form-control select2']) !!}
+</div>
+
+<hr>
+
 <!-- Password Field -->
 <div class="form-group col-sm-6 @if($errors->has('password')) has-error @endif">
     {!! Form::label('password', 'Contraseña:') !!}

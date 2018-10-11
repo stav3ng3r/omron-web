@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -27,14 +26,12 @@ class ProductBrand extends Model
 
     public $table = 'pr_productos_marcas';
 
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     public $fillable = [
-        'descripcion',
-        'fecha_creacion',
-        'fecha_actualizacion'
+        'descripcion'
     ];
 
     /**
@@ -53,7 +50,7 @@ class ProductBrand extends Model
      * @var array
      */
     public static $rules = [
-
+        'descripcion' => 'required|string'
     ];
 
     /**
@@ -61,38 +58,38 @@ class ProductBrand extends Model
      **/
     public function distribution_centers()
     {
-        return $this->hasMany(\App\Models\DistributionCenter::class, 'marca');
+        return $this->hasMany(DistributionCenter::class, 'marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omOficinasRegionales()
+    public function regional_offices()
     {
-        return $this->hasMany(\App\Models\OmOficinasRegionale::class);
+        return $this->hasMany(RegionalOffice::class, 'marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductosCategorias()
+    public function product_categories()
     {
-        return $this->hasMany(\App\Models\PrProductosCategoria::class);
+        return $this->hasMany(ProductCategory::class, 'marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omDistribuidores()
+    public function distributors()
     {
-        return $this->hasMany(\App\Models\OmDistribuidore::class);
+        return $this->hasMany(Distributor::class, 'marca');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductos()
+    public function products()
     {
-        return $this->hasMany(\App\Models\PrProducto::class);
+        return $this->hasMany(Product::class, 'marca');
     }
 }

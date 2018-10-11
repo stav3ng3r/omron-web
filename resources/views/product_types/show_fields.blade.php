@@ -8,8 +8,8 @@
 <!-- Id Categoria Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Id Categoria</td>
-    <td style="text-align: right">{{ $productType->id_categoria }}</td>
+    <td style="font-weight: bold; text-align: right">Categoria</td>
+    <td style="text-align: right">{{ $productType->category->descripcion }}</td>
 </tr>
 
 <!-- Descripcion Field -->

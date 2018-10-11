@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cn User
+            Users App
         </h1>
     </section>
     <div class="content">
@@ -12,14 +12,14 @@
             <div class="col-md-6 col-sm-12">
                 <div class="box box-primary box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Datos de Cn User</h3>
+                        <h3 class="box-title">Datos de Users App</h3>
                     </div>
 
                     <div class="box-body">
                         <div class="row">
-                            {!! Form::open(['route' => 'cnUsers.store']) !!}
+                            {!! Form::open(['route' => 'usersApps.store']) !!}
 
-                                @include('cn_users.fields')
+                                @include('users_apps.fields')
 
                             {!! Form::close() !!}
                         </div>

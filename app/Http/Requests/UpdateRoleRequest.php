@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\CnUser;
+use App\Models\Role;
 
-class CreateCnUserRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
 
     /**
@@ -25,6 +25,6 @@ class CreateCnUserRequest extends FormRequest
      */
     public function rules()
     {
-        return CnUser::$rules;
+        return Role::$rules;
     }
 }

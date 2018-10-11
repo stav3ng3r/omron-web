@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductTypeRequest;
 use App\Http\Requests\UpdateProductTypeRequest;
+use App\Models\ProductCategory;
 use App\Repositories\ProductTypeRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +26,12 @@ class ProductTypeController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->productTypeRepository->pushCriteria(new RequestCriteria($request));
-        $productTypes = $this->productTypeRepository->all();
+        $productTypes = $this->productTypeRepository->paginate(30);
 
         return view('product_types.index')
             ->with('productTypes', $productTypes);
@@ -43,7 +44,9 @@ class ProductTypeController extends AppBaseController
      */
     public function create()
     {
-        return view('product_types.create');
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+
+        return view('product_types.create', compact('categories'));
     }
 
     /**
@@ -52,6 +55,7 @@ class ProductTypeController extends AppBaseController
      * @param CreateProductTypeRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateProductTypeRequest $request)
     {
@@ -59,7 +63,8 @@ class ProductTypeController extends AppBaseController
 
         $productType = $this->productTypeRepository->create($input);
 
-        Flash::success('Product Type saved successfully.');
+        Flash::success('Tipo guradado exitosamente');
+        Flash::important();
 
         return redirect(route('productTypes.index'));
     }
@@ -76,7 +81,7 @@ class ProductTypeController extends AppBaseController
         $productType = $this->productTypeRepository->findWithoutFail($id);
 
         if (empty($productType)) {
-            Flash::error('Product Type not found');
+            Flash::error('Tipo no encontrado.');
 
             return redirect(route('productTypes.index'));
         }
@@ -96,35 +101,39 @@ class ProductTypeController extends AppBaseController
         $productType = $this->productTypeRepository->findWithoutFail($id);
 
         if (empty($productType)) {
-            Flash::error('Product Type not found');
+            Flash::error('Tipo no encontrado.');
 
             return redirect(route('productTypes.index'));
         }
 
-        return view('product_types.edit')->with('productType', $productType);
+        $categories = ProductCategory::all()->pluck('descripcion', 'id');
+
+        return view('product_types.edit')->with(compact('categories', 'productType'));
     }
 
     /**
      * Update the specified ProductType in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductTypeRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductTypeRequest $request)
     {
         $productType = $this->productTypeRepository->findWithoutFail($id);
 
         if (empty($productType)) {
-            Flash::error('Product Type not found');
+            Flash::error('Tipo no encontrado.');
 
             return redirect(route('productTypes.index'));
         }
 
         $productType = $this->productTypeRepository->update($request->all(), $id);
 
-        Flash::success('Product Type updated successfully.');
+        Flash::success('Tipo actualizado exitosamente.');
+        Flash::important();
 
         return redirect(route('productTypes.index'));
     }
@@ -141,14 +150,15 @@ class ProductTypeController extends AppBaseController
         $productType = $this->productTypeRepository->findWithoutFail($id);
 
         if (empty($productType)) {
-            Flash::error('Product Type not found');
+            Flash::error('Tipo no encontrado.');
 
             return redirect(route('productTypes.index'));
         }
 
         $this->productTypeRepository->delete($id);
 
-        Flash::success('Product Type deleted successfully.');
+        Flash::success('Tipo eliminado exitosamente.');
+        Flash::important();
 
         return redirect(route('productTypes.index'));
     }

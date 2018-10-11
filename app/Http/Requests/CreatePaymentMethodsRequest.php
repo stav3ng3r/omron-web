@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\CnUser;
+use App\Models\PaymentMethods;
 
-class UpdateCnUserRequest extends FormRequest
+class CreatePaymentMethodsRequest extends FormRequest
 {
 
     /**
@@ -25,6 +25,6 @@ class UpdateCnUserRequest extends FormRequest
      */
     public function rules()
     {
-        return CnUser::$rules;
+        return PaymentMethods::$rules;
     }
 }

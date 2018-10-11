@@ -2,19 +2,19 @@
 
 namespace App\Repositories;
 
-use App\Models\CnUser;
+use App\Models\UsersApp;
 use InfyOm\Generator\Common\BaseRepository;
 
 /**
- * Class CnUserRepository
+ * Class UsersAppRepository
  * @package App\Repositories
- * @version October 5, 2018, 2:21 am UTC
+ * @version October 11, 2018, 9:55 pm UTC
  *
- * @method CnUser findWithoutFail($id, $columns = ['*'])
- * @method CnUser find($id, $columns = ['*'])
- * @method CnUser first($columns = ['*'])
+ * @method UsersApp findWithoutFail($id, $columns = ['*'])
+ * @method UsersApp find($id, $columns = ['*'])
+ * @method UsersApp first($columns = ['*'])
 */
-class CnUserRepository extends BaseRepository
+class UsersAppRepository extends BaseRepository
 {
     /**
      * @var array
@@ -39,6 +39,6 @@ class CnUserRepository extends BaseRepository
      **/
     public function model()
     {
-        return CnUser::class;
+        return UsersApp::class;
     }
 }

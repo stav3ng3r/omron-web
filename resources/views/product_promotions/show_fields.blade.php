@@ -9,7 +9,7 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Id Producto</td>
-    <td style="text-align: right">{{ $productPromotion->id_producto }}</td>
+    <td style="text-align: right">{{ $productPromotion->product->nombre }}</td>
 </tr>
 
 <!-- Desde Field -->
@@ -26,6 +26,13 @@
     <td style="text-align: right">{{ $productPromotion->hasta }}</td>
 </tr>
 
+<!-- Distribuidor Field -->
+
+<tr>
+    <td style="font-weight: bold; text-align: right">Distribuidor</td>
+    <td style="text-align: right">{{ ($productPromotion->distributor ? $productPromotion->distributor->titulo : '') }}</td>
+</tr>
+
 <!-- Fecha Creacion Field -->
 
 <tr>
@@ -33,10 +40,4 @@
     <td style="text-align: right">{{ $productPromotion->fecha_creacion }}</td>
 </tr>
 
-<!-- Distribuidor Field -->
-
-<tr>
-    <td style="font-weight: bold; text-align: right">Distribuidor</td>
-    <td style="text-align: right">{{ $productPromotion->distribuidor }}</td>
-</tr>
 

@@ -8,8 +8,8 @@
 <!-- Id Cliente Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Id Cliente</td>
-    <td style="text-align: right">{{ $clientContact->id_cliente }}</td>
+    <td style="font-weight: bold; text-align: right">Cliente</td>
+    <td style="text-align: right">{{ $clientContact->client->descripcion }}</td>
 </tr>
 
 <!-- Nombre Field -->

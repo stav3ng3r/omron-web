@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -44,16 +43,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Person extends Model
 {
-    use SoftDeletes;
-
     public $table = 'cn_personas';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
-    protected $dates = ['deleted_at'];
-
+    protected $dates = [
+        'fecha_ingreso'
+    ];
 
     public $fillable = [
         'nombre',
@@ -72,12 +69,12 @@ class Person extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'nombre' => 'string',
-        'apellido' => 'string',
-        'numero_documento' => 'string',
+        'id'                => 'integer',
+        'nombre'            => 'string',
+        'apellido'          => 'string',
+        'numero_documento'  => 'string',
         'telefono_contacto' => 'string',
-        'email' => 'string'
+        'email'             => 'string'
     ];
 
     /**
@@ -86,22 +83,31 @@ class Person extends Model
      * @var array
      */
     public static $rules = [
-        
+        'nombre'            => 'required|string',
+        'apellido'          => 'required|string',
+        'numero_documento'  => 'required|string',
+        'telefono_contacto' => 'required|string',
+        'email'             => 'email'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnUsuarios()
+    public function cn_users()
     {
-        return $this->hasMany(\App\Models\CnUsuario::class);
+        return $this->hasMany(CnUser::class, 'id_persona');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnVendedores()
+    public function salesmen()
     {
-        return $this->hasMany(\App\Models\CnVendedore::class);
+        return $this->hasMany(Salesman::class, 'id_vendedor');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return trim($this->attributes['nombre'] . ' ' . $this->attributes['apellido']);
     }
 }

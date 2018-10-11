@@ -26,11 +26,12 @@ class ProductBrandController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->productBrandRepository->pushCriteria(new RequestCriteria($request));
-        $productBrands = $this->productBrandRepository->all();
+        $productBrands = $this->productBrandRepository->paginate(30);
 
         return view('product_brands.index')
             ->with('productBrands', $productBrands);
@@ -52,6 +53,7 @@ class ProductBrandController extends AppBaseController
      * @param CreateProductBrandRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateProductBrandRequest $request)
     {
@@ -59,7 +61,8 @@ class ProductBrandController extends AppBaseController
 
         $productBrand = $this->productBrandRepository->create($input);
 
-        Flash::success('Product Brand saved successfully.');
+        Flash::success('Marca guardada exitosamente');
+        Flash::important();
 
         return redirect(route('productBrands.index'));
     }
@@ -76,7 +79,7 @@ class ProductBrandController extends AppBaseController
         $productBrand = $this->productBrandRepository->findWithoutFail($id);
 
         if (empty($productBrand)) {
-            Flash::error('Product Brand not found');
+            Flash::error('Marca no encontrada.');
 
             return redirect(route('productBrands.index'));
         }
@@ -96,7 +99,7 @@ class ProductBrandController extends AppBaseController
         $productBrand = $this->productBrandRepository->findWithoutFail($id);
 
         if (empty($productBrand)) {
-            Flash::error('Product Brand not found');
+            Flash::error('Marca no encontrada.');
 
             return redirect(route('productBrands.index'));
         }
@@ -107,24 +110,26 @@ class ProductBrandController extends AppBaseController
     /**
      * Update the specified ProductBrand in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductBrandRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductBrandRequest $request)
     {
         $productBrand = $this->productBrandRepository->findWithoutFail($id);
 
         if (empty($productBrand)) {
-            Flash::error('Product Brand not found');
+            Flash::error('Marca no encontrada.');
 
             return redirect(route('productBrands.index'));
         }
 
         $productBrand = $this->productBrandRepository->update($request->all(), $id);
 
-        Flash::success('Product Brand updated successfully.');
+        Flash::success('Marca actualizada exitosamente');
+        Flash::important();
 
         return redirect(route('productBrands.index'));
     }
@@ -141,14 +146,15 @@ class ProductBrandController extends AppBaseController
         $productBrand = $this->productBrandRepository->findWithoutFail($id);
 
         if (empty($productBrand)) {
-            Flash::error('Product Brand not found');
+            Flash::error('Marca no encontrada.');
 
             return redirect(route('productBrands.index'));
         }
 
         $this->productBrandRepository->delete($id);
 
-        Flash::success('Product Brand deleted successfully.');
+        Flash::success('Marca eliminada exitosamente');
+        Flash::important();
 
         return redirect(route('productBrands.index'));
     }

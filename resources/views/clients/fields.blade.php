@@ -31,7 +31,7 @@
 <!-- Distribuidor Field -->
 <div class="form-group col-sm-6 @if($errors->has('distribuidor')) has-error @endif">
     {!! Form::label('distribuidor', 'Distribuidor:') !!}
-    {!! Form::select('distribuidor', $distributors, old('distributor'), ['class' => 'form-control']) !!}
+    {!! Form::select('distribuidor', $distributors, old('distributor'), ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Submit Field -->

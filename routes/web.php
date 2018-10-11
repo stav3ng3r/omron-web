@@ -16,7 +16,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index')->name('dashboard');
     Route::resource('users', 'UserController');
     Route::resource('clients', 'ClientController');
     Route::resource('clients', 'ClientController');
@@ -81,3 +81,9 @@ Route::get('/test', function () {
 
 
 Route::resource('cities', 'CityController');
+
+Route::resource('paymentMethods', 'PaymentMethodsController');
+
+Route::resource('usersApps', 'UsersAppController');
+
+Route::resource('roles', 'RoleController');

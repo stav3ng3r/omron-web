@@ -50,12 +50,10 @@ class Salesman extends Model
     use SoftDeletes;
 
     public $table = 'cn_vendedores';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+    const DELETED_AT = 'fecha_borrado';
 
 
     public $fillable = [
@@ -75,11 +73,11 @@ class Salesman extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'         => 'integer',
         'id_persona' => 'integer',
-        'activo' => 'boolean',
-        'meta' => 'integer',
-        'email' => 'string'
+        'activo'     => 'boolean',
+        'meta'       => 'integer',
+        'email'      => 'string'
     ];
 
     /**
@@ -88,15 +86,18 @@ class Salesman extends Model
      * @var array
      */
     public static $rules = [
-        
+        'id_persona' => 'required|integer',
+        'activo'     => 'nullable|boolean',
+        'meta'       => 'required|numeric',
+        'email'      => 'required|email'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnPersona()
+    public function person()
     {
-        return $this->belongsTo(\App\Models\CnPersona::class);
+        return $this->belongsTo(\App\Models\Person::class, 'id_persona');
     }
 
     /**

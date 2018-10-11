@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -60,22 +59,23 @@ class ProductType extends Model
      * @var array
      */
     public static $rules = [
-
+        'id_categoria' => 'required|integer',
+        'descripcion'  => 'required|string'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProductosCategoria()
+    public function category()
     {
-        return $this->belongsTo(\App\Models\PrProductosCategoria::class);
+        return $this->belongsTo(ProductCategory::class, 'id_categoria');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function prProductos()
+    public function products()
     {
-        return $this->hasMany(\App\Models\PrProducto::class);
+        return $this->hasMany(Product::class, 'id_tipo');
     }
 }

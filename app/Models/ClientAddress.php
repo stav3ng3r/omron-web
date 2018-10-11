@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -57,15 +56,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ClientAddress extends Model
 {
-    use SoftDeletes;
 
     public $table = 'cn_clientes_direccion_entrega';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     public $fillable = [
@@ -84,14 +79,14 @@ class ClientAddress extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'descripcion' => 'string',
-        'pais' => 'integer',
-        'ciudad' => 'integer',
+        'id'                => 'integer',
+        'descripcion'       => 'string',
+        'pais'              => 'integer',
+        'ciudad'            => 'integer',
         'direccion_entrega' => 'string',
-        'telefono_entrega' => 'string',
-        'contacto_entrega' => 'string',
-        'cliente' => 'integer'
+        'telefono_entrega'  => 'string',
+        'contacto_entrega'  => 'string',
+        'cliente'           => 'integer'
     ];
 
     /**
@@ -100,31 +95,37 @@ class ClientAddress extends Model
      * @var array
      */
     public static $rules = [
-        
+        'descripcion'       => 'required|string',
+        'pais'              => 'required|integer',
+        'ciudad'            => 'required|integer',
+        'direccion_entrega' => 'required|string',
+        'telefono_entrega'  => 'required|string',
+        'contacto_entrega'  => 'required|string',
+        'cliente'           => 'required|integer'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCiudade()
+    public function city()
     {
-        return $this->belongsTo(\App\Models\CnCiudade::class);
+        return $this->belongsTo(City::class, 'ciudad');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCliente()
+    public function client()
     {
-        return $this->belongsTo(\App\Models\CnCliente::class);
+        return $this->belongsTo(\App\Models\Client::class, 'cliente');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnPai()
+    public function country()
     {
-        return $this->belongsTo(\App\Models\CnPai::class);
+        return $this->belongsTo(Country::class, 'pais');
     }
 
     /**

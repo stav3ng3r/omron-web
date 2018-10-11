@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="CnUser",
+ *      definition="UsersApp",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -60,7 +60,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class CnUser extends Model
+class UsersApp extends Model
 {
     use SoftDeletes;
 
@@ -80,6 +80,9 @@ class CnUser extends Model
         'bloqueado',
         'resetear_password',
         'fecha_ultimo_login',
+        'fecha_creacion',
+        'fecha_actualizacion',
+        'fecha_borrado',
         'email'
     ];
 
@@ -106,15 +109,22 @@ class CnUser extends Model
      * @var array
      */
     public static $rules = [
-
+        'id_persona'        => 'required|integer',
+        'id_role'           => 'required|integer',
+        'id_tipo_usuario'   => 'required|integer',
+        'password'          => 'string',
+        'usuario'           => 'string',
+        'bloqueado'         => 'boolean',
+        'resetear_password' => 'boolean',
+        'email'             => 'string'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function person()
+    public function cnPersona()
     {
-        return $this->belongsTo(\App\Models\Person::class, 'id_persona');
+        return $this->belongsTo(\App\Models\CnPersona::class);
     }
 
     /**

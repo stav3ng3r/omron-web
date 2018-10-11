@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSalesmanRequest;
 use App\Http\Requests\UpdateSalesmanRequest;
+use App\Models\Person;
 use App\Repositories\SalesmanRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +26,12 @@ class SalesmanController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->salesmanRepository->pushCriteria(new RequestCriteria($request));
-        $salesmen = $this->salesmanRepository->all();
+        $salesmen = $this->salesmanRepository->with('person')->paginate(30);
 
         return view('salesmen.index')
             ->with('salesmen', $salesmen);
@@ -43,7 +44,9 @@ class SalesmanController extends AppBaseController
      */
     public function create()
     {
-        return view('salesmen.create');
+        $people = Person::all()->pluck('full_name', 'id');
+
+        return view('salesmen.create', compact('people'));
     }
 
     /**
@@ -52,14 +55,21 @@ class SalesmanController extends AppBaseController
      * @param CreateSalesmanRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateSalesmanRequest $request)
     {
         $input = $request->all();
 
+        if (!isset($input['activo']))
+            $input['activo'] = FALSE;
+        else
+            $input['activo'] = TRUE;
+
         $salesman = $this->salesmanRepository->create($input);
 
-        Flash::success('Salesman saved successfully.');
+        Flash::success('Vendedor guardado exitosamente');
+        Flash::important();
 
         return redirect(route('salesmen.index'));
     }
@@ -76,7 +86,7 @@ class SalesmanController extends AppBaseController
         $salesman = $this->salesmanRepository->findWithoutFail($id);
 
         if (empty($salesman)) {
-            Flash::error('Salesman not found');
+            Flash::error('Vendedor no encontrado.');
 
             return redirect(route('salesmen.index'));
         }
@@ -96,35 +106,46 @@ class SalesmanController extends AppBaseController
         $salesman = $this->salesmanRepository->findWithoutFail($id);
 
         if (empty($salesman)) {
-            Flash::error('Salesman not found');
+            Flash::error('Vendedor no encontrado.');
 
             return redirect(route('salesmen.index'));
         }
 
-        return view('salesmen.edit')->with('salesman', $salesman);
+        $people = Person::all()->pluck('full_name', 'id');
+
+        return view('salesmen.edit')->with(compact('salesman', 'people'));
     }
 
     /**
      * Update the specified Salesman in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateSalesmanRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateSalesmanRequest $request)
     {
         $salesman = $this->salesmanRepository->findWithoutFail($id);
 
         if (empty($salesman)) {
-            Flash::error('Salesman not found');
+            Flash::error('Vendedor no encontrado.');
 
             return redirect(route('salesmen.index'));
         }
 
-        $salesman = $this->salesmanRepository->update($request->all(), $id);
+        $input = $request->all();
 
-        Flash::success('Salesman updated successfully.');
+        if (!isset($input['activo']))
+            $input['activo'] = FALSE;
+        else
+            $input['activo'] = TRUE;
+
+        $salesman = $this->salesmanRepository->update($input, $id);
+
+        Flash::success('Vendedor actualizado exitosamente');
+        Flash::important();
 
         return redirect(route('salesmen.index'));
     }
@@ -141,14 +162,15 @@ class SalesmanController extends AppBaseController
         $salesman = $this->salesmanRepository->findWithoutFail($id);
 
         if (empty($salesman)) {
-            Flash::error('Salesman not found');
+            Flash::error('Vendedor no encontrado.');
 
             return redirect(route('salesmen.index'));
         }
 
         $this->salesmanRepository->delete($id);
 
-        Flash::success('Salesman deleted successfully.');
+        Flash::success('Vendedor eliminado exitosamente');
+        Flash::important();
 
         return redirect(route('salesmen.index'));
     }

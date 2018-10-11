@@ -37,14 +37,17 @@
 
 <tr>
     <td style="font-weight: bold; text-align: right">Logo</td>
-    <td style="text-align: right">{{ $client->logo }}</td>
+    <td style="text-align: right">
+        <img style="max-width: 128px; max-height: 128px;"
+             src="{!! $client->logo  !!}" class="img-responsive pull-right" alt="{{ $client->descripcion }}">
+    </td>
 </tr>
 
 <!-- Distribuidor Field -->
 
 <tr>
     <td style="font-weight: bold; text-align: right">Distribuidor</td>
-    <td style="text-align: right">{{ $client->distribuidor }}</td>
+    <td style="text-align: right">{{ ($client->distributor ? $client->distributor->titulo : '') }}</td>
 </tr>
 
 <!-- Fecha Creacion Field -->
@@ -64,7 +67,7 @@
 <!-- Deleted At Field -->
 
 <tr>
-    <td style="font-weight: bold; text-align: right">Deleted At</td>
+    <td style="font-weight: bold; text-align: right">Fecha Borrado</td>
     <td style="text-align: right">{{ $client->deleted_at }}</td>
 </tr>
 

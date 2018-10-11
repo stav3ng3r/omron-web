@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Role;
 use App\Repositories\UserRepository;
+use App\User;
 use Flash;
 use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -30,7 +32,8 @@ class UserController extends AppBaseController
     public function index(Request $request)
     {
         $this->userRepository->pushCriteria(new RequestCriteria($request));
-        $users = $this->userRepository->all();
+        $users = $this->userRepository->with('roles')
+            ->paginate(30);
 
         return view('users.index')
             ->with('users', $users);
@@ -43,7 +46,11 @@ class UserController extends AppBaseController
      */
     public function create()
     {
-        return view('users.create');
+
+        $roles = Role::all()->pluck('title', 'id');
+        $user = new User();
+
+        return view('users.create', compact('roles', 'user'));
     }
 
     /**
@@ -103,7 +110,9 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        return view('users.edit')->with('user', $user);
+        $roles = Role::all()->pluck('title', 'id');
+
+        return view('users.edit')->with(compact('user', 'roles'));
     }
 
     /**
@@ -127,10 +136,14 @@ class UserController extends AppBaseController
 
         $input = $request->except('_token');
 
-        if(empty($input['password']))
+        if (empty($input['password']))
             unset($input['password']);
 
         $user = $this->userRepository->update($request->all(), $id);
+
+        if ($role = Role::find($request->get('role'))->first()) {
+            $user->assign($role);
+        }
 
         Flash::success('Usuario actualizado exitosamente.');
         Flash::important();

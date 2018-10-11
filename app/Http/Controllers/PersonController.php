@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
 use App\Repositories\PersonRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +25,12 @@ class PersonController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->personRepository->pushCriteria(new RequestCriteria($request));
-        $people = $this->personRepository->all();
+        $people = $this->personRepository->paginate(30);
 
         return view('people.index')
             ->with('people', $people);
@@ -52,6 +52,7 @@ class PersonController extends AppBaseController
      * @param CreatePersonRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreatePersonRequest $request)
     {
@@ -59,7 +60,8 @@ class PersonController extends AppBaseController
 
         $person = $this->personRepository->create($input);
 
-        Flash::success('Person saved successfully.');
+        Flash::success('Persona creada exitosamente');
+        Flash::important();
 
         return redirect(route('people.index'));
     }
@@ -76,7 +78,7 @@ class PersonController extends AppBaseController
         $person = $this->personRepository->findWithoutFail($id);
 
         if (empty($person)) {
-            Flash::error('Person not found');
+            Flash::error('Persona no encontrada.');
 
             return redirect(route('people.index'));
         }
@@ -96,7 +98,7 @@ class PersonController extends AppBaseController
         $person = $this->personRepository->findWithoutFail($id);
 
         if (empty($person)) {
-            Flash::error('Person not found');
+            Flash::error('Persona no encontrada.');
 
             return redirect(route('people.index'));
         }
@@ -107,24 +109,26 @@ class PersonController extends AppBaseController
     /**
      * Update the specified Person in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdatePersonRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdatePersonRequest $request)
     {
         $person = $this->personRepository->findWithoutFail($id);
 
         if (empty($person)) {
-            Flash::error('Person not found');
+            Flash::error('Persona no encontrada.');
 
             return redirect(route('people.index'));
         }
 
         $person = $this->personRepository->update($request->all(), $id);
 
-        Flash::success('Person updated successfully.');
+        Flash::success('Persona actualizada exitosamente');
+        Flash::important();
 
         return redirect(route('people.index'));
     }
@@ -141,14 +145,15 @@ class PersonController extends AppBaseController
         $person = $this->personRepository->findWithoutFail($id);
 
         if (empty($person)) {
-            Flash::error('Person not found');
+            Flash::error('Persona no encontrada.');
 
             return redirect(route('people.index'));
         }
 
         $this->personRepository->delete($id);
 
-        Flash::success('Person deleted successfully.');
+        Flash::success('Persona eliminada exitosamente.');
+        Flash::important();
 
         return redirect(route('people.index'));
     }

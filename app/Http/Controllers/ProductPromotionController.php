@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductPromotionRequest;
 use App\Http\Requests\UpdateProductPromotionRequest;
+use App\Models\Distributor;
+use App\Models\Product;
+use App\Models\ProductPromotion;
 use App\Repositories\ProductPromotionRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +28,13 @@ class ProductPromotionController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->productPromotionRepository->pushCriteria(new RequestCriteria($request));
-        $productPromotions = $this->productPromotionRepository->all();
+        $productPromotions = $this->productPromotionRepository->with(['product', 'distributor'])
+            ->paginate(30);
 
         return view('product_promotions.index')
             ->with('productPromotions', $productPromotions);
@@ -43,7 +47,12 @@ class ProductPromotionController extends AppBaseController
      */
     public function create()
     {
-        return view('product_promotions.create');
+
+        $products = Product::all()->pluck('nombre', 'id');
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+        $productPromotion = new ProductPromotion();
+
+        return view('product_promotions.create', compact('products', 'distributors', 'productPromotion'));
     }
 
     /**
@@ -52,6 +61,7 @@ class ProductPromotionController extends AppBaseController
      * @param CreateProductPromotionRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateProductPromotionRequest $request)
     {
@@ -59,7 +69,8 @@ class ProductPromotionController extends AppBaseController
 
         $productPromotion = $this->productPromotionRepository->create($input);
 
-        Flash::success('Product Promotion saved successfully.');
+        Flash::success('Promocion guardad exitosamente');
+        Flash::important();
 
         return redirect(route('productPromotions.index'));
     }
@@ -76,7 +87,7 @@ class ProductPromotionController extends AppBaseController
         $productPromotion = $this->productPromotionRepository->findWithoutFail($id);
 
         if (empty($productPromotion)) {
-            Flash::error('Product Promotion not found');
+            Flash::error('Promocion no encontrada.');
 
             return redirect(route('productPromotions.index'));
         }
@@ -96,28 +107,32 @@ class ProductPromotionController extends AppBaseController
         $productPromotion = $this->productPromotionRepository->findWithoutFail($id);
 
         if (empty($productPromotion)) {
-            Flash::error('Product Promotion not found');
+            Flash::error('Promocion no encontrada.');
 
             return redirect(route('productPromotions.index'));
         }
 
-        return view('product_promotions.edit')->with('productPromotion', $productPromotion);
+        $products = Product::all()->pluck('nombre', 'id');
+        $distributors = Distributor::all()->pluck('titulo', 'id');
+
+        return view('product_promotions.edit')->with(compact('productPromotion', 'products', 'distributors'));
     }
 
     /**
      * Update the specified ProductPromotion in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductPromotionRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductPromotionRequest $request)
     {
         $productPromotion = $this->productPromotionRepository->findWithoutFail($id);
 
         if (empty($productPromotion)) {
-            Flash::error('Product Promotion not found');
+            Flash::error('Promocion no encontrada.');
 
             return redirect(route('productPromotions.index'));
         }
@@ -141,7 +156,7 @@ class ProductPromotionController extends AppBaseController
         $productPromotion = $this->productPromotionRepository->findWithoutFail($id);
 
         if (empty($productPromotion)) {
-            Flash::error('Product Promotion not found');
+            Flash::error('Promocion no encontrada.');
 
             return redirect(route('productPromotions.index'));
         }

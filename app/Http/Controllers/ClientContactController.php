@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateClientContactRequest;
 use App\Http\Requests\UpdateClientContactRequest;
+use App\Models\Client;
 use App\Repositories\ClientContactRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -31,7 +31,8 @@ class ClientContactController extends AppBaseController
     public function index(Request $request)
     {
         $this->clientContactRepository->pushCriteria(new RequestCriteria($request));
-        $clientContacts = $this->clientContactRepository->all();
+        $clientContacts = $this->clientContactRepository->with('client')
+            ->paginate();
 
         return view('client_contacts.index')
             ->with('clientContacts', $clientContacts);
@@ -44,7 +45,9 @@ class ClientContactController extends AppBaseController
      */
     public function create()
     {
-        return view('client_contacts.create');
+        $clients = Client::all()->pluck('descripcion', 'id');
+
+        return view('client_contacts.create', compact('clients'));
     }
 
     /**
@@ -61,7 +64,8 @@ class ClientContactController extends AppBaseController
 
         $clientContact = $this->clientContactRepository->create($input);
 
-        Flash::success('Client Contact saved successfully.');
+        Flash::success('Contacto guardado exitosamente.');
+        Flash::important();
 
         return redirect(route('clientContacts.index'));
     }
@@ -78,7 +82,7 @@ class ClientContactController extends AppBaseController
         $clientContact = $this->clientContactRepository->findWithoutFail($id);
 
         if (empty($clientContact)) {
-            Flash::error('Client Contact not found');
+            Flash::error('Contacto no encontrado.');
 
             return redirect(route('clientContacts.index'));
         }
@@ -98,12 +102,14 @@ class ClientContactController extends AppBaseController
         $clientContact = $this->clientContactRepository->findWithoutFail($id);
 
         if (empty($clientContact)) {
-            Flash::error('Client Contact not found');
+            Flash::error('Contacto no encontrado.');
 
             return redirect(route('clientContacts.index'));
         }
 
-        return view('client_contacts.edit')->with('clientContact', $clientContact);
+        $clients = Client::all()->pluck('descripcion', 'id');
+
+        return view('client_contacts.edit')->with(compact('clientContact', 'clients'));
     }
 
     /**
@@ -113,20 +119,22 @@ class ClientContactController extends AppBaseController
      * @param UpdateClientContactRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateClientContactRequest $request)
     {
         $clientContact = $this->clientContactRepository->findWithoutFail($id);
 
         if (empty($clientContact)) {
-            Flash::error('Client Contact not found');
+            Flash::error('Contacto no encontrado.');
 
             return redirect(route('clientContacts.index'));
         }
 
         $clientContact = $this->clientContactRepository->update($request->all(), $id);
 
-        Flash::success('Client Contact updated successfully.');
+        Flash::success('Contacto actualizado exitosamente');
+        Flash::important();
 
         return redirect(route('clientContacts.index'));
     }
@@ -143,14 +151,15 @@ class ClientContactController extends AppBaseController
         $clientContact = $this->clientContactRepository->findWithoutFail($id);
 
         if (empty($clientContact)) {
-            Flash::error('Client Contact not found');
+            Flash::error('Contacto no encontrado.');
 
             return redirect(route('clientContacts.index'));
         }
 
         $this->clientContactRepository->delete($id);
 
-        Flash::success('Client Contact deleted successfully.');
+        Flash::success('Contacto elminado exitosamente.');
+        Flash::important();
 
         return redirect(route('clientContacts.index'));
     }

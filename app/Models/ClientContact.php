@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -45,15 +44,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ClientContact extends Model
 {
-    use SoftDeletes;
-
     public $table = 'cn_cliente_contacto';
-    
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     public $fillable = [
@@ -72,11 +66,11 @@ class ClientContact extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'id_cliente' => 'integer',
-        'nombre' => 'string',
-        'departamento' => 'string',
-        'email' => 'string',
+        'id'                => 'integer',
+        'id_cliente'        => 'integer',
+        'nombre'            => 'string',
+        'departamento'      => 'string',
+        'email'             => 'string',
         'telefono_contacto' => 'string'
     ];
 
@@ -86,14 +80,18 @@ class ClientContact extends Model
      * @var array
      */
     public static $rules = [
-        
+        'id_cliente'        => 'required|integer',
+        'nombre'            => 'required|string',
+        'departamento'      => 'required|string',
+        'email'             => 'required|string',
+        'telefono_contacto' => 'required|string'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function cnCliente()
+    public function client()
     {
-        return $this->belongsTo(\App\Models\CnCliente::class);
+        return $this->belongsTo(Client::class, 'id_cliente');
     }
 }

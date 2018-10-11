@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateClientAddressRequest;
 use App\Http\Requests\UpdateClientAddressRequest;
+use App\Models\City;
+use App\Models\Client;
+use App\Models\Country;
 use App\Repositories\ClientAddressRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +28,13 @@ class ClientAddressController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->clientAddressRepository->pushCriteria(new RequestCriteria($request));
-        $clientAddresses = $this->clientAddressRepository->all();
+        $clientAddresses = $this->clientAddressRepository->with(['city', 'client', 'country'])
+            ->paginate(30);
 
         return view('client_addresses.index')
             ->with('clientAddresses', $clientAddresses);
@@ -43,7 +47,11 @@ class ClientAddressController extends AppBaseController
      */
     public function create()
     {
-        return view('client_addresses.create');
+        $countries = Country::all()->pluck('descripcion', 'id');
+        $cities = City::all()->pluck('descripcion', 'id');
+        $clients = Client::all()->pluck('descripcion', 'id');
+
+        return view('client_addresses.create', compact('countries', 'cities', 'clients'));
     }
 
     /**
@@ -52,6 +60,7 @@ class ClientAddressController extends AppBaseController
      * @param CreateClientAddressRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateClientAddressRequest $request)
     {
@@ -59,7 +68,8 @@ class ClientAddressController extends AppBaseController
 
         $clientAddress = $this->clientAddressRepository->create($input);
 
-        Flash::success('Client Address saved successfully.');
+        Flash::success('Direccion guardada exitosamente.');
+        Flash::important();
 
         return redirect(route('clientAddresses.index'));
     }
@@ -76,7 +86,7 @@ class ClientAddressController extends AppBaseController
         $clientAddress = $this->clientAddressRepository->findWithoutFail($id);
 
         if (empty($clientAddress)) {
-            Flash::error('Client Address not found');
+            Flash::error('Direccion no encontrada.');
 
             return redirect(route('clientAddresses.index'));
         }
@@ -96,35 +106,41 @@ class ClientAddressController extends AppBaseController
         $clientAddress = $this->clientAddressRepository->findWithoutFail($id);
 
         if (empty($clientAddress)) {
-            Flash::error('Client Address not found');
+            Flash::error('Direccion no encontrada.');
 
             return redirect(route('clientAddresses.index'));
         }
 
-        return view('client_addresses.edit')->with('clientAddress', $clientAddress);
+        $countries = Country::all()->pluck('descripcion', 'id');
+        $cities = City::all()->pluck('descripcion', 'id');
+        $clients = Client::all()->pluck('descripcion', 'id');
+
+        return view('client_addresses.edit')->with(compact('clientAddress', 'countries', 'cities', 'clients'));
     }
 
     /**
      * Update the specified ClientAddress in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateClientAddressRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateClientAddressRequest $request)
     {
         $clientAddress = $this->clientAddressRepository->findWithoutFail($id);
 
         if (empty($clientAddress)) {
-            Flash::error('Client Address not found');
+            Flash::error('Direccion no encontrada.');
 
             return redirect(route('clientAddresses.index'));
         }
 
         $clientAddress = $this->clientAddressRepository->update($request->all(), $id);
 
-        Flash::success('Client Address updated successfully.');
+        Flash::success('Direcciona Actualizada exitosamente');
+        Flash::important();
 
         return redirect(route('clientAddresses.index'));
     }
@@ -141,14 +157,15 @@ class ClientAddressController extends AppBaseController
         $clientAddress = $this->clientAddressRepository->findWithoutFail($id);
 
         if (empty($clientAddress)) {
-            Flash::error('Client Address not found');
+            Flash::error('Direccion no encontrada.');
 
             return redirect(route('clientAddresses.index'));
         }
 
         $this->clientAddressRepository->delete($id);
 
-        Flash::success('Client Address deleted successfully.');
+        Flash::success('Direccion eliminada exitosamente.');
+        Flash::important();
 
         return redirect(route('clientAddresses.index'));
     }

@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cn User
+            Role
         </h1>
     </section>
     <div class="content">
@@ -11,7 +11,7 @@
             <div class="col-md-6 col-sm-12">
                 <div class="box box-primary box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Datos de Cn User</h3>
+                        <h3 class="box-title">Datos de Role</h3>
                     </div>
 
                     <div class="box-body">
@@ -19,7 +19,7 @@
                             <div class="col-sm-12">
                                 <div class="table-responsive">
                                     <table class="table table-striped">
-                                        @include('cn_users.show_fields')
+                                        @include('roles.show_fields')
                                     </table>
                                 </div>
                             </div>
@@ -27,7 +27,8 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('cnUsers.index') !!}" class="btn btn-default">Back</a>
+                        <a href="{!! route('roles.index') !!}" class="btn btn-default">
+                        <i class="fa fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>
             </div>

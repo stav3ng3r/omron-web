@@ -1,31 +1,31 @@
 <!-- Id Cliente Field -->
 <div class="form-group col-sm-6 @if($errors->has('id_cliente')) has-error @endif">
-    {!! Form::label('id_cliente', 'Id Cliente:') !!}
-    {!! Form::number('id_cliente', null, ['class' => 'form-control']) !!}
+    {!! Form::label('id_cliente', 'Cliente:') !!}
+    {!! Form::select('id_cliente', $clients, NULL, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Nombre Field -->
 <div class="form-group col-sm-6 @if($errors->has('nombre')) has-error @endif">
     {!! Form::label('nombre', 'Nombre:') !!}
-    {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+    {!! Form::text('nombre', NULL, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Departamento Field -->
 <div class="form-group col-sm-6 @if($errors->has('departamento')) has-error @endif">
     {!! Form::label('departamento', 'Departamento:') !!}
-    {!! Form::text('departamento', null, ['class' => 'form-control']) !!}
+    {!! Form::text('departamento', NULL, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Email Field -->
 <div class="form-group col-sm-6 @if($errors->has('email')) has-error @endif">
     {!! Form::label('email', 'Email:') !!}
-    {!! Form::email('email', null, ['class' => 'form-control']) !!}
+    {!! Form::email('email', NULL, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Telefono Contacto Field -->
 <div class="form-group col-sm-6 @if($errors->has('telefono_contacto')) has-error @endif">
     {!! Form::label('telefono_contacto', 'Telefono Contacto:') !!}
-    {!! Form::text('telefono_contacto', null, ['class' => 'form-control']) !!}
+    {!! Form::text('telefono_contacto', NULL, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

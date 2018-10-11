@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th>Usuario</th>
+        <th>Rol</th>
         <th>Nombre</th>
         <th>Email</th>
         <th>Reiniciar Contraseña</th>
@@ -16,6 +17,7 @@
     @foreach($users as $user)
         <tr>
             <td>{{ $user->username }}</td>
+            <td>{{ ($user->role ? $user->role->title : '') }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>

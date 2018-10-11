@@ -1,25 +1,25 @@
+<li class="{{ Request::is('/') ? 'active' : '' }}">
+    <a href="{!! route('dashboard') !!}"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+</li>
+
 <li class="treeview @if(in_array(Request::segment(1), [
         'users',
         'cnUsers',
     ])) active @endif">
     <a href="#">
-        <i class="fa fa-key"></i> <span>Administrar Usuarios</span>
+        <i class="fa fa-key"></i> <span>Administrar Credenciales</span>
         <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
     </a>
     <ul class="treeview-menu">
         <li class="{{ Request::is('users*') ? 'active' : '' }}">
-            <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>Usuarios Web</span></a>
+            <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>Usuarios</span></a>
         </li>
 
-        {{--<li class="{{ Request::is('cnUsers*') ? 'active' : '' }}">--}}
-        {{--<a href="{!! route('cnUsers.index') !!}"><i class="fa fa-user"></i><span>Usuarios Movil</span></a>--}}
-        {{--</li>--}}
-
-        {{--<li class="{{ Request::is('userTypes*') ? 'active' : '' }}">--}}
-        {{--<a href="{!! route('userTypes.index') !!}"><i class="fa fa-edit"></i><span>User Types</span></a>--}}
-        {{--</li>--}}
+        <li class="{{ Request::is('roles*') ? 'active' : '' }}">
+            <a href="{!! route('roles.index') !!}"><i class="fa fa-users"></i><span>Roles</span></a>
+        </li>
     </ul>
 </li>
 
@@ -48,9 +48,13 @@
             <a href="{!! route('clientAddresses.index') !!}"><i class="fa fa-address-book"></i><span>Direcciones</span></a>
         </li>
 
-        <li class="{{ Request::is('clientPaymentMethods*') ? 'active' : '' }}">
-            <a href="{!! route('clientPaymentMethods.index') !!}"><i
-                        class="fa fa-credit-card"></i><span>Metodos de Pago</span></a>
+        {{--<li class="{{ Request::is('clientPaymentMethods*') ? 'active' : '' }}">--}}
+        {{--<a href="{!! route('clientPaymentMethods.index') !!}"><i--}}
+        {{--class="fa fa-credit-card"></i><span>Metodos de Pago</span></a>--}}
+        {{--</li>--}}
+
+        <li class="{{ Request::is('paymentMethods*') ? 'active' : '' }}">
+            <a href="{!! route('paymentMethods.index') !!}"><i class="fa fa-credit-card"></i><span>Formas de Pago</span></a>
         </li>
     </ul>
 </li>
@@ -175,3 +179,4 @@
 <li class="{{ Request::is('stocks*') ? 'active' : '' }}">
     <a href="{!! route('stocks.index') !!}"><i class="fa fa-cubes"></i><span>Stock</span></a>
 </li>
+

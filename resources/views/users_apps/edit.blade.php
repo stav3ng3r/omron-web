@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cn User
+            Users App
         </h1>
    </section>
    <div class="content">
@@ -16,9 +16,9 @@
 
                    <div class="box-body">
                        <div class="row">
-                           {!! Form::model($cnUser, ['route' => ['cnUsers.update', $cnUser->id], 'method' => 'patch']) !!}
+                           {!! Form::model($usersApp, ['route' => ['usersApps.update', $usersApp->id], 'method' => 'patch']) !!}
 
-                               @include('cn_users.fields')
+                               @include('users_apps.fields')
 
                           {!! Form::close() !!}
                        </div>

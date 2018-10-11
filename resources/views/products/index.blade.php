@@ -5,9 +5,7 @@
         <h1">Productos</h1>
     </section>
     <div class="content">
-
         <div class="clearfix"></div>
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="box box-primary">
