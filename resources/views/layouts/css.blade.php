@@ -12,6 +12,7 @@
 <!-- iCheck -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/iCheck/all.css') }}">
 <link rel="stylesheet" href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
 
 <!-- Ionicons -->
 <link rel="stylesheet" href="{{ asset('bower_components/Ionicons/css/ionicons.min.css') }}">

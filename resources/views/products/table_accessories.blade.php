@@ -27,6 +27,9 @@
                     {!! Form::open(['url' =>  route('productAccessories.destroy', ['productAccessory' => $productAccessory->id, 'product' => $product->id]),
                         'method' => 'delete', 'id' => "delete_form_acc_{$productAccessory->id}"]) !!}
                     <div class='btn-group'>
+                        <a href="{!! route('products.show', [$productAccessory->id]) !!}"
+                           class='btn btn-default btn-xs'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="#" class="btn btn-danger btn-xs"
                            onclick="swal_delete('Eliminar Accesorio',
                                    'Esta accion eliminara el Accesorio' + '{{ $productAccessory->nombre }}. Desea continuar?', 'delete_form_acc_{{ $productAccessory->id }}')"

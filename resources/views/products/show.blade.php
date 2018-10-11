@@ -77,8 +77,32 @@
 
                     <div class="box-body">
                         <div class="row margin-bottom">
-                            <div class="col-md-12">
-                                {!! Form::select('accessories_list', $productsList, NULL, ['id' => 'accessories_list']) !!}
+                            <div class="col-md-6 col-sm-offset-3 text-center">
+
+                                {!! Form::open(['url' => route('productAccessories.store', [$product->id])]) !!}
+
+                                <div class="row">
+
+                                    <div class="form-group">
+                                        {!!  Form::label('accessories_list', 'Productos.') !!}
+
+                                        <select class="form-control" name="accessories_list[]" id="accessories_list"
+                                                multiple="multiple">
+                                            <option></option>
+                                            @foreach($productsList as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top']) !!}
+                                </div>
+
+                                {!!  Form::close() !!}
 
                             </div>
                         </div>
@@ -86,6 +110,65 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 @include('products.table_accessories')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-primary box-solid">
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Imagenes</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="row margin-bottom">
+                            <div class="col-md-6 col-sm-offset-3 text-center">
+
+                                {!! Form::open(['url' => route('productImages.store', [$product->id])]) !!}
+
+                                <div class="row">
+
+                                    <div class="form-group">
+
+                                        {!! Form::url('image_url', NULL, ['class' => 'form-control', 'placeholder' => 'Nueva URL de Imagen']) !!}
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top']) !!}
+                                </div>
+
+                                {!!  Form::close() !!}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    @foreach($product->images as $image)
+                                        <div class="col-sm-2">
+                                            <img class="img-responsive" style="width: 150px; height: 150px"
+                                                 src="{!! $image->url_imagen !!}" alt="...">
+                                            {!! Form::open(['url' =>  route('productImages.destroy', ['product' => $product->id, 'productImage' => $image->id]),
+                                                'method' => 'delete', 'id' => "delete_form_img_{$image->id}"]) !!}
+                                            <a href="#" class="btn btn-danger btn-xs"
+                                               onclick="swal_delete('Eliminar Imagen',
+                                                       'Esta accion eliminara la Imagen. Desea continuar?', 'delete_form_img_{{ $image->id }}')"
+                                            >
+                                                <i class="glyphicon glyphicon-trash"></i></a>
+
+                                            {!!  Form::close() !!}
+                                        </div>
+                                @endforeach
+                                <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
                             </div>
                         </div>
                     </div>
@@ -100,7 +183,10 @@
         $(document).ready(function () {
 
             $('#accessories_list').select2({
-                placeholder: 'Seleccionar Accesorios'
+                placeholder: 'Seleccionar Accesorios',
+                allowClear: true,
+                theme: 'bootstrap',
+                multiple: true
             });
 
         });

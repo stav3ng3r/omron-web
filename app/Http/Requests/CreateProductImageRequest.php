@@ -15,7 +15,7 @@ class CreateProductImageRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return TRUE;
     }
 
     /**

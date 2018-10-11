@@ -32,7 +32,7 @@ class ProductAccessory extends Model
     use SoftDeletes;
 
     public $table = 'pr_productos_accesorios';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -42,7 +42,9 @@ class ProductAccessory extends Model
 
     public $fillable = [
         'codigo_producto_principal',
-        'codigo_producto_accesorio'
+        'codigo_producto_accesorio',
+        'id_producto',
+        'id_accesorio',
     ];
 
     /**
@@ -51,7 +53,7 @@ class ProductAccessory extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'                        => 'integer',
         'codigo_producto_principal' => 'string',
         'codigo_producto_accesorio' => 'string'
     ];
@@ -62,8 +64,8 @@ class ProductAccessory extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

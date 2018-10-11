@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('distributorMultipliers', 'DistributorMultiplierController');
     Route::resource('regionalOffices', 'RegionalOfficeController');
     Route::resource('products', 'ProductController');
-    Route::resource('productAccessories', 'ProductAccessoryController');
+//    Route::resource('productAccessories', 'ProductAccessoryController');
     Route::resource('productCategories', 'ProductCategoryController');
 
     Route::prefix('products/{product}/details')->group(function () {
@@ -55,8 +55,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('{productAccessory}', 'ProductAccessoryController@destroy')->name('productAccessories.destroy');
     });
 
+    Route::prefix('products/{product}/images')->group(function () {
+        Route::post('/', 'ProductImageController@store')->name('productImages.store');
+        Route::delete('{productImage}', 'ProductImageController@destroy')->name('productImages.destroy');
+    });
 
-    Route::resource('productImages', 'ProductImageController');
+
+//    Route::resource('productImages', 'ProductImageController');
     Route::resource('productBrands', 'ProductBrandController');
     Route::resource('productPromotions', 'ProductPromotionController');
     Route::resource('productTypes', 'ProductTypeController');

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductAccessoryRequest;
 use App\Http\Requests\UpdateProductAccessoryRequest;
+use App\Models\Product;
+use App\Models\ProductAccessory;
 use App\Repositories\ProductAccessoryRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -15,10 +18,13 @@ class ProductAccessoryController extends AppBaseController
 {
     /** @var  ProductAccessoryRepository */
     private $productAccessoryRepository;
+    /** @var ProductRepository */
+    private $productRepository;
 
-    public function __construct(ProductAccessoryRepository $productAccessoryRepo)
+    public function __construct(ProductAccessoryRepository $productAccessoryRepo, ProductRepository $productRepo)
     {
         $this->productAccessoryRepository = $productAccessoryRepo;
+        $this->productRepository = $productRepo;
     }
 
     /**
@@ -26,6 +32,7 @@ class ProductAccessoryController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -49,39 +56,79 @@ class ProductAccessoryController extends AppBaseController
     /**
      * Store a newly created ProductAccessory in storage.
      *
+     * @param $product
      * @param CreateProductAccessoryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(CreateProductAccessoryRequest $request)
+    public function store($product, CreateProductAccessoryRequest $request)
     {
+
+        $product = $this->productRepository->with('details')->findWithoutFail($product);
+
+        if (empty($product)) {
+            Flash::error('Producto no encontrado.');
+
+            return redirect(route('products.index'));
+        }
+
         $input = $request->all();
 
-        $productAccessory = $this->productAccessoryRepository->create($input);
+        $accessories = Product::whereIn('id', $input['accessories_list'])->get();
 
-        Flash::success('Product Accessory saved successfully.');
+        if (!$accessories OR $accessories->isEmpty()) {
+            Flash::error('Accesorios no encontrados.');
 
-        return redirect(route('productAccessories.index'));
+            return redirect(route('products.show', $product->id));
+        }
+
+        foreach ($accessories as $accessory) {
+
+            $data = [
+                'codigo_producto_principal' => $product->codigo,
+                'codigo_producto_accesorio' => $accessory->codigo,
+                'id_producto'               => $product->id,
+                'id_accesorio'              => $accessory->id
+            ];
+
+            $productAccessory = $this->productAccessoryRepository->create($data);
+        }
+
+
+        Flash::success('Accesorios guardados exitosamente');
+        Flash::important();
+
+        return redirect(route('products.show', $product->id));
     }
 
     /**
      * Display the specified ProductAccessory.
      *
+     * @param $product
      * @param  int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function show($product, $id)
     {
+        $product = $this->productRepository->with('details')->findWithoutFail($product);
+
+        if (empty($product)) {
+            Flash::error('Producto no encontrado.');
+
+            return redirect(route('products.index'));
+        }
+
         $productAccessory = $this->productAccessoryRepository->findWithoutFail($id);
 
         if (empty($productAccessory)) {
-            Flash::error('Product Accessory not found');
+            Flash::error('Accesorio no encontrado');
 
-            return redirect(route('productAccessories.index'));
+            return redirect(route('products.show', $product->id));
         }
 
-        return view('product_accessories.show')->with('productAccessory', $productAccessory);
+        return redirect(route('products.show', $productAccessory->id_accesorio));
     }
 
     /**
@@ -107,10 +154,11 @@ class ProductAccessoryController extends AppBaseController
     /**
      * Update the specified ProductAccessory in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductAccessoryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductAccessoryRequest $request)
     {
@@ -132,24 +180,34 @@ class ProductAccessoryController extends AppBaseController
     /**
      * Remove the specified ProductAccessory from storage.
      *
+     * @param $product
      * @param  int $id
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($product, $id)
     {
+        $product = $this->productRepository->with('details')->findWithoutFail($product);
+
+        if (empty($product)) {
+            Flash::error('Producto no encontrado.');
+
+            return redirect(route('products.index'));
+        }
+
         $productAccessory = $this->productAccessoryRepository->findWithoutFail($id);
 
         if (empty($productAccessory)) {
-            Flash::error('Product Accessory not found');
+            Flash::error('Accesorio no encontrado');
 
-            return redirect(route('productAccessories.index'));
+            return redirect(route('products.show', $product->id));
         }
 
         $this->productAccessoryRepository->delete($id);
 
-        Flash::success('Product Accessory deleted successfully.');
+        Flash::success('Accesorio eliminado exitosamente.');
+        Flash::important();
 
-        return redirect(route('productAccessories.index'));
+        return redirect(route('products.show', $product->id));
     }
 }

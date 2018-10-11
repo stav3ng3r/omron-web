@@ -6,6 +6,7 @@ use App\Http\Requests\CreateProductImageRequest;
 use App\Http\Requests\UpdateProductImageRequest;
 use App\Repositories\ProductImageRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -15,10 +16,13 @@ class ProductImageController extends AppBaseController
 {
     /** @var  ProductImageRepository */
     private $productImageRepository;
+    /** @var ProductRepository */
+    private $productRepository;
 
-    public function __construct(ProductImageRepository $productImageRepo)
+    public function __construct(ProductImageRepository $productImageRepo, ProductRepository $productRepo)
     {
         $this->productImageRepository = $productImageRepo;
+        $this->productRepository = $productRepo;
     }
 
     /**
@@ -26,6 +30,7 @@ class ProductImageController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -49,19 +54,35 @@ class ProductImageController extends AppBaseController
     /**
      * Store a newly created ProductImage in storage.
      *
+     * @param $product
      * @param CreateProductImageRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(CreateProductImageRequest $request)
+    public function store($product, CreateProductImageRequest $request)
     {
-        $input = $request->all();
+
+        $product = $this->productRepository->with('details')->findWithoutFail($product);
+
+        if (empty($product)) {
+            Flash::error('Producto no encontrado.');
+
+            return redirect(route('products.index'));
+        }
+
+        $input = [
+            'id_producto' => $product->id,
+            'url_imagen'  => $request->get('image_url'),
+            'codigo'      => $product->codigo
+        ];
 
         $productImage = $this->productImageRepository->create($input);
 
-        Flash::success('Product Image saved successfully.');
+        Flash::success('Imagen guardada exitosamente');
+        Flash::important();
 
-        return redirect(route('productImages.index'));
+        return redirect(route('products.show', $product->id));
     }
 
     /**
@@ -107,10 +128,11 @@ class ProductImageController extends AppBaseController
     /**
      * Update the specified ProductImage in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProductImageRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateProductImageRequest $request)
     {
@@ -132,24 +154,35 @@ class ProductImageController extends AppBaseController
     /**
      * Remove the specified ProductImage from storage.
      *
+     * @param $product
      * @param  int $id
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($product, $id)
     {
+
+        $product = $this->productRepository->findWithoutFail($product);
+
+        if (empty($product)) {
+            Flash::error('Producto no encontrado.');
+
+            return redirect(route('products.index'));
+        }
+
         $productImage = $this->productImageRepository->findWithoutFail($id);
 
         if (empty($productImage)) {
-            Flash::error('Product Image not found');
+            Flash::error('Imagen no encontrada');
 
-            return redirect(route('productImages.index'));
+            return redirect(route('products.show', $product->id));
         }
 
         $this->productImageRepository->delete($id);
 
-        Flash::success('Product Image deleted successfully.');
+        Flash::success('Imagen eliminada exitosamente');
+        Flash::important();
 
-        return redirect(route('productImages.index'));
+        return redirect(route('products.show', $product->id));
     }
 }

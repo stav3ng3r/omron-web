@@ -230,6 +230,14 @@ class Product extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'id_producto');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
     public function cmComprasDetalles()
     {
         return $this->hasMany(\App\Models\CmComprasDetalle::class);
@@ -241,14 +249,6 @@ class Product extends Model
     public function omPosDetalles()
     {
         return $this->hasMany(\App\Models\OmPosDetalle::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function prProductosImagenes()
-    {
-        return $this->hasMany(\App\Models\PrProductosImagene::class);
     }
 
     /**

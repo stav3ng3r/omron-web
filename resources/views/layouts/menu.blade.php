@@ -14,11 +14,11 @@
         </li>
 
         {{--<li class="{{ Request::is('cnUsers*') ? 'active' : '' }}">--}}
-            {{--<a href="{!! route('cnUsers.index') !!}"><i class="fa fa-user"></i><span>Usuarios Movil</span></a>--}}
+        {{--<a href="{!! route('cnUsers.index') !!}"><i class="fa fa-user"></i><span>Usuarios Movil</span></a>--}}
         {{--</li>--}}
 
         {{--<li class="{{ Request::is('userTypes*') ? 'active' : '' }}">--}}
-            {{--<a href="{!! route('userTypes.index') !!}"><i class="fa fa-edit"></i><span>User Types</span></a>--}}
+        {{--<a href="{!! route('userTypes.index') !!}"><i class="fa fa-edit"></i><span>User Types</span></a>--}}
         {{--</li>--}}
     </ul>
 </li>
@@ -140,10 +140,6 @@
 
         <li class="{{ Request::is('productCategories*') ? 'active' : '' }}">
             <a href="{!! route('productCategories.index') !!}"><i class="fa fa-cubes"></i><span>Categorias</span></a>
-        </li>
-
-        <li class="{{ Request::is('productImages*') ? 'active' : '' }}">
-            <a href="{!! route('productImages.index') !!}"><i class="fa fa-image"></i><span>Imagenes</span></a>
         </li>
 
         <li class="{{ Request::is('productBrands*') ? 'active' : '' }}">

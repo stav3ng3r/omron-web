@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -35,15 +34,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ProductImage extends Model
 {
-    use SoftDeletes;
-
     public $table = 'pr_productos_imagenes';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -58,10 +52,10 @@ class ProductImage extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'          => 'integer',
         'id_producto' => 'integer',
-        'url_imagen' => 'string',
-        'codigo' => 'string'
+        'url_imagen'  => 'string',
+        'codigo'      => 'string'
     ];
 
     /**
@@ -70,14 +64,14 @@ class ProductImage extends Model
      * @var array
      */
     public static $rules = [
-        
+        'image_url' => 'required|string',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function prProducto()
+    public function product()
     {
-        return $this->belongsTo(\App\Models\PrProducto::class);
+        return $this->belongsTo(Product::class, 'id_producto');
     }
 }
