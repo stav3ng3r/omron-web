@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -58,46 +57,47 @@ class Country extends Model
      * @var array
      */
     public static $rules = [
-
+        'descripcion' => 'required|string',
+        'abreviatura' => 'required|string'
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnCiudades()
+    public function cities()
     {
-        return $this->hasMany(\App\Models\City::class);
+        return $this->hasMany(City::class, 'pais');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omCentrosDistribucions()
+    public function distribution_centers()
     {
-        return $this->hasMany(\App\Models\OmCentrosDistribucion::class);
+        return $this->hasMany(DistributionCenter::class, 'pais');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omOficinasRegionales()
+    public function regional_offices()
     {
-        return $this->hasMany(\App\Models\OmOficinasRegionale::class);
+        return $this->hasMany(RegionalOffice::class, 'pais');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function omDistribuidores()
+    public function distributors()
     {
-        return $this->hasMany(\App\Models\OmDistribuidore::class);
+        return $this->hasMany(Distributor::class, 'pais');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function cnClientesDireccionEntregas()
+    public function client_addresses()
     {
-        return $this->hasMany(\App\Models\CnClientesDireccionEntrega::class);
+        return $this->hasMany(ClientAddress::class, 'pais');
     }
 }

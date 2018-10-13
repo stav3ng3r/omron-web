@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCurrencyRequest;
 use App\Http\Requests\UpdateCurrencyRequest;
 use App\Repositories\CurrencyRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +25,12 @@ class CurrencyController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->currencyRepository->pushCriteria(new RequestCriteria($request));
-        $currencies = $this->currencyRepository->all();
+        $currencies = $this->currencyRepository->paginate();
 
         return view('currencies.index')
             ->with('currencies', $currencies);
@@ -52,6 +52,7 @@ class CurrencyController extends AppBaseController
      * @param CreateCurrencyRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateCurrencyRequest $request)
     {
@@ -59,7 +60,8 @@ class CurrencyController extends AppBaseController
 
         $currency = $this->currencyRepository->create($input);
 
-        Flash::success('Currency saved successfully.');
+        Flash::success('Moneda guardada exitosamente');
+        Flash::important();
 
         return redirect(route('currencies.index'));
     }
@@ -76,7 +78,7 @@ class CurrencyController extends AppBaseController
         $currency = $this->currencyRepository->findWithoutFail($id);
 
         if (empty($currency)) {
-            Flash::error('Currency not found');
+            Flash::error('Moneda no encontrada.');
 
             return redirect(route('currencies.index'));
         }
@@ -96,7 +98,7 @@ class CurrencyController extends AppBaseController
         $currency = $this->currencyRepository->findWithoutFail($id);
 
         if (empty($currency)) {
-            Flash::error('Currency not found');
+            Flash::error('Moneda no encontrada.');
 
             return redirect(route('currencies.index'));
         }
@@ -107,24 +109,26 @@ class CurrencyController extends AppBaseController
     /**
      * Update the specified Currency in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateCurrencyRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateCurrencyRequest $request)
     {
         $currency = $this->currencyRepository->findWithoutFail($id);
 
         if (empty($currency)) {
-            Flash::error('Currency not found');
+            Flash::error('Moneda no encontrada.');
 
             return redirect(route('currencies.index'));
         }
 
         $currency = $this->currencyRepository->update($request->all(), $id);
 
-        Flash::success('Currency updated successfully.');
+        Flash::success('Moneda actualizada exitosamente.');
+        Flash::important();
 
         return redirect(route('currencies.index'));
     }
@@ -141,14 +145,15 @@ class CurrencyController extends AppBaseController
         $currency = $this->currencyRepository->findWithoutFail($id);
 
         if (empty($currency)) {
-            Flash::error('Currency not found');
+            Flash::error('Moneda no encontrada.');
 
             return redirect(route('currencies.index'));
         }
 
         $this->currencyRepository->delete($id);
 
-        Flash::success('Currency deleted successfully.');
+        Flash::success('Moneda eliminada exitosamente.');
+        Flash::important();
 
         return redirect(route('currencies.index'));
     }

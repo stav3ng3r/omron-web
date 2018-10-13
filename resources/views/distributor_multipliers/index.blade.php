@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Distributor Multipliers</h1>
+        <h1 class="pull-left">Multiplicadores</h1>
     </section>
     <div class="content">
 
@@ -14,7 +14,7 @@
                     <div class="box-body">
                         <div class="row margin-bottom">
                             <div class="col-md-12">
-                                <a class="btn btn-success btn-flat pull-right"
+                                <a class="btn btn-success btn-flat pull-right block-on-click"
                                    href="{!! route('distributorMultipliers.create') !!}">
                                     <i class="glyphicon glyphicon-plus"></i> Agregar
                                 </a>

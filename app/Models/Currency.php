@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -29,22 +28,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Currency extends Model
 {
-    use SoftDeletes;
-
     public $table = 'cn_monedas';
 
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 
 
     public $fillable = [
         'descripcion',
         'simbolo',
-        'fecha_creacion',
-        'fecha_actualizacion'
     ];
 
     /**
@@ -64,7 +56,8 @@ class Currency extends Model
      * @var array
      */
     public static $rules = [
-
+        'descripcion' => 'required|string',
+        'simbolo'     => 'required|string'
     ];
 
     /**

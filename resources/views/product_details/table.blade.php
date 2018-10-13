@@ -39,7 +39,7 @@
                         'method' => 'delete', 'id' => "delete_form_det_{$productDetail->id}"]) !!}
                     <div class='btn-group'>
                         {{--<a href="{!! route('productDetails.show', ['productDetail' => $productDetail->id, 'product' => $product->id]) !!}"--}}
-                           {{--class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>--}}
+                        {{--class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>--}}
                         <a href="{!! route('productDetails.edit', ['productDetail' => $productDetail->id, 'product' => $product->id]) !!}"
                            class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
 

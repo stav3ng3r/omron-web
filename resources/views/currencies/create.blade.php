@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Currency
+            Monedas
         </h1>
     </section>
     <div class="content">
@@ -19,7 +19,7 @@
                         <div class="row">
                             {!! Form::open(['route' => 'currencies.store']) !!}
 
-                                @include('currencies.fields')
+                            @include('currencies.fields')
 
                             {!! Form::close() !!}
                         </div>

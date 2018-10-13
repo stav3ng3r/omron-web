@@ -27,12 +27,14 @@
                 <td>
                     {!! Form::open(['route' => ['people.destroy', $person->id], 'method' => 'delete', 'id' => "delete_form_{$person->id}"]) !!}
                     <div class='btn-group'>
-                        <a href="{!! route('people.show', [$person->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('people.show', [$person->id]) !!}"
+                           class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-eye-open"></i></a>
-                        <a href="{!! route('people.edit', [$person->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('people.edit', [$person->id]) !!}"
+                           class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Persona',
                                    'Esta accion eliminara la Persona' + '{{ $person->full_name }}. Desea continuar?', 'delete_form_{{ $person->id }}')"
                         >

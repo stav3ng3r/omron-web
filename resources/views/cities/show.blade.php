@@ -27,7 +27,8 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('cities.index') !!}" class="btn btn-default">Back</a>
+                        <a href="{!! route('cities.index') !!}" class="btn btn-default block-on-click"><i
+                                    class="fa fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>
             </div>

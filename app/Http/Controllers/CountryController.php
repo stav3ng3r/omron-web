@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Repositories\CountryRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
@@ -26,11 +25,12 @@ class CountryController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->countryRepository->pushCriteria(new RequestCriteria($request));
-        $countries = $this->countryRepository->all();
+        $countries = $this->countryRepository->paginate();
 
         return view('countries.index')
             ->with('countries', $countries);
@@ -52,6 +52,7 @@ class CountryController extends AppBaseController
      * @param CreateCountryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateCountryRequest $request)
     {
@@ -59,7 +60,8 @@ class CountryController extends AppBaseController
 
         $country = $this->countryRepository->create($input);
 
-        Flash::success('Country saved successfully.');
+        Flash::success('Pais guardado exitosamente');
+        Flash::important();
 
         return redirect(route('countries.index'));
     }
@@ -76,7 +78,7 @@ class CountryController extends AppBaseController
         $country = $this->countryRepository->findWithoutFail($id);
 
         if (empty($country)) {
-            Flash::error('Country not found');
+            Flash::error('Pais no encontrado.');
 
             return redirect(route('countries.index'));
         }
@@ -96,7 +98,7 @@ class CountryController extends AppBaseController
         $country = $this->countryRepository->findWithoutFail($id);
 
         if (empty($country)) {
-            Flash::error('Country not found');
+            Flash::error('Pais no encontrado.');
 
             return redirect(route('countries.index'));
         }
@@ -107,24 +109,26 @@ class CountryController extends AppBaseController
     /**
      * Update the specified Country in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateCountryRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($id, UpdateCountryRequest $request)
     {
         $country = $this->countryRepository->findWithoutFail($id);
 
         if (empty($country)) {
-            Flash::error('Country not found');
+            Flash::error('Pais no encontrado.');
 
             return redirect(route('countries.index'));
         }
 
         $country = $this->countryRepository->update($request->all(), $id);
 
-        Flash::success('Country updated successfully.');
+        Flash::success('Pais actualizado exitosamente');
+        Flash::important();
 
         return redirect(route('countries.index'));
     }
@@ -141,14 +145,15 @@ class CountryController extends AppBaseController
         $country = $this->countryRepository->findWithoutFail($id);
 
         if (empty($country)) {
-            Flash::error('Country not found');
+            Flash::error('Pais no encontrado.');
 
             return redirect(route('countries.index'));
         }
 
         $this->countryRepository->delete($id);
 
-        Flash::success('Country deleted successfully.');
+        Flash::success('Pais eliminado exitosamente');
+        Flash::important();
 
         return redirect(route('countries.index'));
     }

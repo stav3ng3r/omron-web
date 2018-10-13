@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'name', 'email', 'password',
+        'username', 'name', 'email', 'password', 'id_person', 'id_brand'
     ];
 
     /**
@@ -32,11 +32,13 @@ class User extends Authenticatable
     protected $table = 'auth.users';
 
     static $rules = [
-        'role'     => 'required|integer',
-        'username' => 'required|string|max:255',
-        'name'     => 'required|string|max:255',
-        'email'    => 'required|string|email|max:255',
-        'password' => 'required|string|min:6|confirmed',
+        'role'      => 'required|integer',
+        'username'  => 'required|string|max:255',
+        'name'      => 'required|string|max:255',
+        'email'     => 'required|string|email|max:255',
+        'password'  => 'required|string|min:6|confirmed',
+        'id_person' => 'required|integer',
+        'id_brand'  => 'required|integer',
     ];
 
     static $messages = [];

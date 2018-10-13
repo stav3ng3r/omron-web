@@ -16,11 +16,12 @@
                     {!! Form::open(['route' => ['paymentMethods.destroy', $paymentMethod->id], 'method' => 'delete', 'id' => "delete_form_$paymentMethod->id"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('paymentMethods.show', [$paymentMethod->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('paymentMethods.edit', [$paymentMethod->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Forma de Pago',
                                    'Esta accion eliminara la Forma de Pago' + '{{ $paymentMethod->descripcion }}. Desea continuar?', 'delete_form_{{ $paymentMethod->id }}')"
                         >

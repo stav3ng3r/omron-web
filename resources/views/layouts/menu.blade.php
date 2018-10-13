@@ -17,9 +17,9 @@
             <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>Usuarios</span></a>
         </li>
 
-        <li class="{{ Request::is('roles*') ? 'active' : '' }}">
-            <a href="{!! route('roles.index') !!}"><i class="fa fa-users"></i><span>Roles</span></a>
-        </li>
+        {{--<li class="{{ Request::is('roles*') ? 'active' : '' }}">--}}
+        {{--<a href="{!! route('roles.index') !!}"><i class="fa fa-users"></i><span>Roles</span></a>--}}
+        {{--</li>--}}
     </ul>
 </li>
 
@@ -107,11 +107,11 @@
     </a>
     <ul class="treeview-menu">
         <li class="{{ Request::is('countries*') ? 'active' : '' }}">
-            <a href="{!! route('countries.index') !!}"><i class="fa fa-circle"></i><span>Paises</span></a>
+            <a href="{!! route('countries.index') !!}"><i class="fa fa-globe"></i><span>Paises</span></a>
         </li>
 
         <li class="{{ Request::is('cities*') ? 'active' : '' }}">
-            <a href="{!! route('cities.index') !!}"><i class="fa fa-circle"></i><span>Ciudades</span></a>
+            <a href="{!! route('cities.index') !!}"><i class="fa fa-building-o"></i><span>Ciudades</span></a>
         </li>
 
         <li class="{{ Request::is('currencies*') ? 'active' : '' }}">

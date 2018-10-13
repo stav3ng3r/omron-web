@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('products.index') !!}" class="btn btn-default"><i
+                        <a href="{!! route('products.index') !!}" class="btn btn-default block-on-click"><i
                                     class="fa fa-arrow-left"></i> Volver</a>
                     </div>
 
@@ -50,7 +50,7 @@
                     <div class="box-body">
                         <div class="row margin-bottom">
                             <div class="col-md-12">
-                                <a class="btn btn-success btn-flat pull-right"
+                                <a class="btn btn-success btn-flat pull-right block-on-click"
                                    href="{!! route('productDetails.create', ['product' => $product->id]) !!}">
                                     <i class="glyphicon glyphicon-plus"></i> Agregar
                                 </a>
@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div class="row">
-                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top']) !!}
+                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top block-on-click']) !!}
                                 </div>
 
                                 {!!  Form::close() !!}
@@ -141,7 +141,7 @@
                                 </div>
 
                                 <div class="row">
-                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top']) !!}
+                                    {!! Form::submit('Agregar', ['class' => 'btn btn-success margin-top block-on-click']) !!}
                                 </div>
 
                                 {!!  Form::close() !!}
@@ -157,7 +157,7 @@
                                                  src="{!! $image->url_imagen !!}" alt="...">
                                             {!! Form::open(['url' =>  route('productImages.destroy', ['product' => $product->id, 'productImage' => $image->id]),
                                                 'method' => 'delete', 'id' => "delete_form_img_{$image->id}"]) !!}
-                                            <a href="#" class="btn btn-danger btn-xs"
+                                            <a href="#" class="btn btn-danger btn-xs block-on-click"
                                                onclick="swal_delete('Eliminar Imagen',
                                                        'Esta accion eliminara la Imagen. Desea continuar?', 'delete_form_img_{{ $image->id }}')"
                                             >

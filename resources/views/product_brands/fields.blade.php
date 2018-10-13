@@ -6,6 +6,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+    {!! Form::submit('Guardar', ['class' => 'btn btn-success block-on-click']) !!}
     <a href="{!! route('productBrands.index') !!}" class="btn btn-default">Cancelar</a>
 </div>

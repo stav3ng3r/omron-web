@@ -40,10 +40,15 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @yield('content')
+
+            <div id="loading" style="display: none;">
+                <img src="{{ asset('svg/dna-spin-spiral-preloader.svg') }}" alt="loading">
+            </div>
         </div>
 
         <!-- Main Footer -->
         @include('layouts.footer')
+
 
     </div>
 

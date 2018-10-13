@@ -21,16 +21,17 @@
                         %</span>
                 </td>
                 <td>
-                    {!! Form::open(['route' => ['distributorMultipliers.destroy', $distributorMultiplier->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['distributorMultipliers.destroy', $distributorMultiplier->id], 'method' => 'delete', 'id' => "delete_form_{$distributorMultiplier->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('distributorMultipliers.show', [$distributorMultiplier->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('distributorMultipliers.edit', [$distributorMultiplier->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
-                           onclick="swal_delete('Eliminar Distributor Multiplier',
-                                   'Esta accion eliminara el Distributor Multiplier ' + '{{ $distributorMultiplier->descripcion }}. Desea continuar?', 'delete_form_{{ $distributorMultiplier->id }}')"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
+                           onclick="swal_delete('Eliminar Multiplicador',
+                                   'Esta accion eliminara el Multiplicador ' + '{{ $distributorMultiplier->descripcion }}. Desea continuar?', 'delete_form_{{ $distributorMultiplier->id }}')"
                         >
                             <i class="glyphicon glyphicon-trash"></i></a>
                     </div>

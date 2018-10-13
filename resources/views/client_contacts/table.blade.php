@@ -22,11 +22,11 @@
                     {!! Form::open(['route' => ['clientContacts.destroy', $clientContact->id], 'method' => 'delete', 'id' => "delete_form_{$clientContact->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('clientContacts.show', [$clientContact->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('clientContacts.edit', [$clientContact->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Contacto',
                                    'Esta accion eliminara el Contacto de ' + '{{ $clientContact->client->descripcion }}. Desea continuar?', 'delete_form_{{ $clientContact->id }}')"
                         >

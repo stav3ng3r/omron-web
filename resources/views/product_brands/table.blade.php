@@ -18,11 +18,12 @@
                     {!! Form::open(['route' => ['productBrands.destroy', $productBrand->id], 'method' => 'delete', 'id' => "delete_form_{$productBrand->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('productBrands.show', [$productBrand->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('productBrands.edit', [$productBrand->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Marca',
                                    'Esta accion eliminara la Marca ' + '{{ $productBrand->descripcion }}. Desea continuar?', 'delete_form_{{ $productBrand->id }}')"
                         >

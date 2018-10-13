@@ -13,14 +13,16 @@
                 <td>{{ $city->country->descripcion }}</td>
                 <td>{{ $city->descripcion }}</td>
                 <td>
-                    {!! Form::open(['route' => ['cities.destroy', $city->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['cities.destroy', $city->id], 'method' => 'delete', 'id' => "delete_form_{$city->id}"]) !!}
                     <div class='btn-group'>
-                        <a href="{!! route('cities.show', [$city->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('cities.show', [$city->id]) !!}"
+                           class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-eye-open"></i></a>
-                        <a href="{!! route('cities.edit', [$city->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('cities.edit', [$city->id]) !!}"
+                           class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Ciudad',
                                    'Esta accion eliminara la Ciudad ' + '{{ $city->descripcion }}. Desea continuar?', 'delete_form_{{ $city->id }}')"
                         >

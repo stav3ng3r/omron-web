@@ -13,7 +13,7 @@
                     <div class="box-body">
                         <div class="row margin-bottom">
                             <div class="col-md-12">
-                                <a class="btn btn-success btn-flat pull-right"
+                                <a class="btn btn-success btn-flat pull-right block-on-click"
                                    href="{!! route('distributorMarkups.create') !!}">
                                     <i class="glyphicon glyphicon-plus"></i> Agregar
                                 </a>

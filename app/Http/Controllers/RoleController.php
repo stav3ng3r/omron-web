@@ -26,11 +26,12 @@ class RoleController extends AppBaseController
      *
      * @param Request $request
      * @return Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->roleRepository->pushCriteria(new RequestCriteria($request));
-        $roles = $this->roleRepository->all();
+        $roles = $this->roleRepository->paginate();
 
         return view('roles.index')
             ->with('roles', $roles);
@@ -52,14 +53,15 @@ class RoleController extends AppBaseController
      * @param CreateRoleRequest $request
      *
      * @return Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CreateRoleRequest $request)
     {
         $input = $request->all();
 
-        $role = $this->roleRepository->create($input);
+//        $role = $this->roleRepository->create($input);
 
-        Flash::success('Role saved successfully.');
+        Flash::success('Role creado exitosamente');
 
         return redirect(route('roles.index'));
     }
@@ -107,7 +109,7 @@ class RoleController extends AppBaseController
     /**
      * Update the specified Role in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateRoleRequest $request
      *
      * @return Response

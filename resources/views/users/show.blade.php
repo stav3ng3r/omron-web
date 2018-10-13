@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('users.index') !!}" class="btn btn-default">Volver</a>
+                        <a href="{!! route('users.index') !!}" class="btn btn-default block-on-click">Volver</a>
                     </div>
                 </div>
             </div>

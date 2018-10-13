@@ -12,7 +12,8 @@
 <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
 <script src="{{ asset('bower_components/noty/lib/noty.js') }}"></script>
 <script src="{{ asset('js/sweetalert.min.js') }}"></script>
-
+<script src="{{ asset('js/jquery.blockUI.js') }}"></script>
+<script src="{{ asset('bower_components/admin-lte/plugins/pace/pace.min.js') }}"></script>
 
 <script src="{{ asset('js/logger.min.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>

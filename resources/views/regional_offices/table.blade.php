@@ -25,14 +25,15 @@
                 <td>{{ $regionalOffice->distribution_center->titulo }}</td>
                 <td>{{ $regionalOffice->brand->descripcion }}</td>
                 <td>
-                    {!! Form::open(['route' => ['regionalOffices.destroy', $regionalOffice->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['regionalOffices.destroy', $regionalOffice->id], 'method' => 'delete', 'id' => "delete_form_{$regionalOffice->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('regionalOffices.show', [$regionalOffice->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('regionalOffices.edit', [$regionalOffice->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Oficina Regional',
                                    'Esta accion eliminara la Oficina Regional ' + '{{ $regionalOffice->titulo }}. Desea continuar?', 'delete_form_{{ $regionalOffice->id }}')"
                         >

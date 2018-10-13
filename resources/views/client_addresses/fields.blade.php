@@ -43,6 +43,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
-    <a href="{!! route('clientAddresses.index') !!}" class="btn btn-default">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn-success block-on-click']) !!}
+    <a href="{!! route('clientAddresses.index') !!}" class="btn btn-default block-on-click">Cancelar</a>
 </div>

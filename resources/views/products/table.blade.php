@@ -39,12 +39,12 @@
                 <td>
                     {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete', 'id' => "delete_form_{$product->id}"]) !!}
                     <div class='btn-group'>
-                        <a href="{!! route('products.show', [$product->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('products.show', [$product->id]) !!}" class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-eye-open"></i></a>
-                        <a href="{!! route('products.edit', [$product->id]) !!}" class='btn btn-default btn-xs'><i
+                        <a href="{!! route('products.edit', [$product->id]) !!}" class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Producto',
                                    'Esta accion eliminara el Producto' + '{{ $product->nombre }}. Desea continuar?', 'delete_form_{{ $product->id }}')"
                         >

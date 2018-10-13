@@ -28,9 +28,9 @@
                         'method' => 'delete', 'id' => "delete_form_acc_{$productAccessory->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('products.show', [$productAccessory->id]) !!}"
-                           class='btn btn-default btn-xs'><i
+                           class='btn btn-default btn-xs block-on-click'><i
                                     class="glyphicon glyphicon-eye-open"></i></a>
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Accesorio',
                                    'Esta accion eliminara el Accesorio' + '{{ $productAccessory->nombre }}. Desea continuar?', 'delete_form_acc_{{ $productAccessory->id }}')"
                         >

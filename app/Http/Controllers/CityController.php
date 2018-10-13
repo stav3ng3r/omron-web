@@ -32,7 +32,7 @@ class CityController extends AppBaseController
     public function index(Request $request)
     {
         $this->cityRepository->pushCriteria(new RequestCriteria($request));
-        $cities = $this->cityRepository->with('country')->all();
+        $cities = $this->cityRepository->with('country')->paginate();
 
         return view('cities.index')
             ->with('cities', $cities);
@@ -82,7 +82,7 @@ class CityController extends AppBaseController
         $city = $this->cityRepository->findWithoutFail($id);
 
         if (empty($city)) {
-            Flash::error('City not found');
+            Flash::error('Ciudad no encontrada.');
 
             return redirect(route('cities.index'));
         }
@@ -103,7 +103,7 @@ class CityController extends AppBaseController
         $countries = Country::all()->pluck('descripcion', 'id');
 
         if (empty($city)) {
-            Flash::error('City not found');
+            Flash::error('Ciudad no encontrada.');
 
             return redirect(route('cities.index'));
         }
@@ -125,14 +125,15 @@ class CityController extends AppBaseController
         $city = $this->cityRepository->findWithoutFail($id);
 
         if (empty($city)) {
-            Flash::error('City not found');
+            Flash::error('Ciudad no encontrada.');
 
             return redirect(route('cities.index'));
         }
 
         $city = $this->cityRepository->update($request->all(), $id);
 
-        Flash::success('City updated successfully.');
+        Flash::success('Ciudad actualizada exitosamente.');
+        Flash::important();
 
         return redirect(route('cities.index'));
     }
@@ -149,14 +150,15 @@ class CityController extends AppBaseController
         $city = $this->cityRepository->findWithoutFail($id);
 
         if (empty($city)) {
-            Flash::error('City not found');
+            Flash::error('Ciudad no encontrada.');
 
             return redirect(route('cities.index'));
         }
 
         $this->cityRepository->delete($id);
 
-        Flash::success('City deleted successfully.');
+        Flash::success('Ciudad eliminada exitosamente.');
+        Flash::important();
 
         return redirect(route('cities.index'));
     }

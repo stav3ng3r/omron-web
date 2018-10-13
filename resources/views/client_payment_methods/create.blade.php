@@ -19,7 +19,7 @@
                         <div class="row">
                             {!! Form::open(['route' => 'clientPaymentMethods.store']) !!}
 
-                                @include('client_payment_methods.fields')
+                            @include('client_payment_methods.fields')
 
                             {!! Form::close() !!}
                         </div>

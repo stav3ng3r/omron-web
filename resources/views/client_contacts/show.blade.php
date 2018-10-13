@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="box-footer text-center">
-                        <a href="{!! route('clientContacts.index') !!}" class="btn btn-default"><i
+                        <a href="{!! route('clientContacts.index') !!}" class="btn btn-default block-on-click"><i
                                     class="fa fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>

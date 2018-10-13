@@ -19,3 +19,4 @@
 
 <link rel="stylesheet" href="{{ asset('bower_components/noty/lib/noty.css') }}">
 <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/pace/pace.min.css') }}">

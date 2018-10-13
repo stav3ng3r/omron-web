@@ -20,11 +20,12 @@
                     {!! Form::open(['route' => ['productPromotions.destroy', $productPromotion->id], 'method' => 'delete', 'id' => "delete_form_{$productPromotion->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('productPromotions.show', [$productPromotion->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('productPromotions.edit', [$productPromotion->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Promocion',
                                    'Esta accion eliminara la Promocion' + '{{ $productPromotion->name }}. Desea continuar?', 'delete_form_{{ $productPromotion->id }}')"
                         >

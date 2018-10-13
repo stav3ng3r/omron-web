@@ -24,22 +24,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
-    <a href="{!! route('productPromotions.index') !!}" class="btn btn-default">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn-success block-on-click']) !!}
+    <a href="{!! route('productPromotions.index') !!}" class="btn btn-default block-on-click">Cancelar</a>
 </div>
-
-
-@section('scripts')
-    <script>
-        $(document).ready(function () {
-
-            $('.select2').select2({
-                placeholder: 'Selecciona un item',
-                allowClear: true,
-                theme: 'bootstrap',
-                multiple: false
-            });
-
-        });
-    </script>
-@append

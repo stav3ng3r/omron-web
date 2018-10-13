@@ -26,11 +26,11 @@
                     {!! Form::open(['route' => ['clientAddresses.destroy', $clientAddress->id], 'method' => 'delete', 'id' => "delete_form_{$clientAddress->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('clientAddresses.show', [$clientAddress->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('clientAddresses.edit', [$clientAddress->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Direccion',
                                    'Esta accion eliminara la Direccion' + '{{ $clientAddress->name }}. Desea continuar?', 'delete_form_{{ $clientAddress->id }}')"
                         >

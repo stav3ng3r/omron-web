@@ -29,8 +29,25 @@ function swal_delete(title, text, formId) {
         .then((willDelete) => {
             if (willDelete) {
                 form.submit();
+            }else{
+                $.unblockUI();
             }
         });
+}
+
+
+function blockOnLoading() {
+    $.blockUI(
+        {
+            css: {
+                border: 'none',
+                backgroundColor: 'none',
+                opacity: 1
+            },
+            message: $('#loading')
+        });
+
+    Pace.restart();
 }
 
 $(document).ready(function () {
@@ -55,6 +72,14 @@ $(document).ready(function () {
         placeholder: 'Selecciona un item',
         allowClear: true,
         theme: 'bootstrap'
+    });
+
+    $('.block-on-click').each(function () {
+        $(this).click(function () {
+            blockOnLoading();
+            $(this).prop('readonly', true);
+        });
+
     });
 
 });

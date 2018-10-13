@@ -23,14 +23,15 @@
                 <td>{{ $distributionCenter->direccion_web }}</td>
                 <td>{{ $distributionCenter->brand->descripcion }}</td>
                 <td>
-                    {!! Form::open(['route' => ['distributionCenters.destroy', $distributionCenter->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['distributionCenters.destroy', $distributionCenter->id], 'method' => 'delete', 'id' => "delete_form_{$distributionCenter->id}"]) !!}
                     <div class='btn-group'>
                         <a href="{!! route('distributionCenters.show', [$distributionCenter->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-eye-open"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i
+                                    class="glyphicon glyphicon-eye-open"></i></a>
                         <a href="{!! route('distributionCenters.edit', [$distributionCenter->id]) !!}"
-                           class='btn btn-default btn-xs'><i class="glyphicon glyphicon-edit"></i></a>
+                           class='btn btn-default btn-xs block-on-click'><i class="glyphicon glyphicon-edit"></i></a>
 
-                        <a href="#" class="btn btn-danger btn-xs"
+                        <a href="#" class="btn btn-danger btn-xs block-on-click"
                            onclick="swal_delete('Eliminar Centro de Distribucion',
                                    'Esta accion eliminara el Centro de Distribucion ' + '{{ $distributionCenter->titulo }}. Desea continuar?', 'delete_form_{{ $distributionCenter->id }}')"
                         >

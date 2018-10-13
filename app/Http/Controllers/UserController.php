@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Person;
+use App\Models\ProductBrand;
 use App\Models\Role;
 use App\Repositories\UserRepository;
 use App\User;
@@ -36,7 +38,7 @@ class UserController extends AppBaseController
             ->paginate(30);
 
         return view('users.index')
-            ->with('users', $users);
+            ->with(compact('users'));
     }
 
     /**
@@ -48,9 +50,11 @@ class UserController extends AppBaseController
     {
 
         $roles = Role::all()->pluck('title', 'id');
+        $people = Person::all()->pluck('full_name', 'id');
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
         $user = new User();
 
-        return view('users.create', compact('roles', 'user'));
+        return view('users.create', compact('roles', 'user', 'people', 'brands'));
     }
 
     /**
@@ -111,8 +115,10 @@ class UserController extends AppBaseController
         }
 
         $roles = Role::all()->pluck('title', 'id');
+        $people = Person::all()->pluck('full_name', 'id');
+        $brands = ProductBrand::all()->pluck('descripcion', 'id');
 
-        return view('users.edit')->with(compact('user', 'roles'));
+        return view('users.edit')->with(compact('user', 'roles', 'people', 'brands'));
     }
 
     /**

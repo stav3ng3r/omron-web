@@ -4,7 +4,6 @@
         <tr>
             <th>Marca</th>
             <th>Descripcion</th>
-            <th>Fecha Creacion</th>
             <th colspan="3">Acciones</th>
         </tr>
         </thead>

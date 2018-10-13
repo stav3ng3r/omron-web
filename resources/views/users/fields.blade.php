@@ -10,6 +10,12 @@
     {!! Form::text('username', NULL, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Id Person Field -->
+<div class="form-group col-sm-6 @if($errors->has('id_person')) has-error @endif">
+    {!! Form::label('id_person', 'Persona:') !!}
+    {!! Form::select('id_person', $people, NULL, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Email Field -->
 <div class="form-group col-sm-6 @if($errors->has('email')) has-error @endif">
     {!! Form::label('email', 'Email:') !!}
@@ -20,6 +26,12 @@
 <div class="form-group col-sm-6 @if($errors->has('role')) has-error @endif">
     {!! Form::label('role', 'Rol de Usuario:') !!}
     {!! Form::select('role', $roles, NULL, ['class' => 'form-control select2']) !!}
+</div>
+
+<!-- Id Brand Field -->
+<div class="form-group col-sm-6 @if($errors->has('id_brand')) has-error @endif">
+    {!! Form::label('id_brand', 'Marca:') !!}
+    {!! Form::text('id_brand', $brands, NULL, ['class' => 'form-control']) !!}
 </div>
 
 <hr>
@@ -39,6 +51,6 @@
 <hr>
 
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
-    <a href="{!! route('users.index') !!}" class="btn btn-default">Cancelar</a>
+    {!! Form::submit('Guardar', ['class' => 'btn btn-success block-on-click']) !!}
+    <a href="{!! route('users.index') !!}" class="btn btn-default block-on-click">Cancelar</a>
 </div>

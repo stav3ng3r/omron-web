@@ -19,7 +19,7 @@
                         <div class="row">
                             {!! Form::open(['route' => 'userTypes.store']) !!}
 
-                                @include('user_types.fields')
+                            @include('user_types.fields')
 
                             {!! Form::close() !!}
                         </div>
